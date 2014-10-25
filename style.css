@@ -5,6 +5,10 @@ body {
 	font-family:"Arial";
 }
 
+a {
+	color:ORANGE;
+}
+
 canvas {
 	background-color:WHITE;
 	margin-left:auto;

@@ -16,8 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var WIDTH = 960;//240;
-var HEIGHT = 540;//135;
+ // Load files here
 
-var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'gameDiv', {preload: 
-    preload, create: create, update: update});
+function preload() {
+    game.load.tilemap("level", "assets/levels/map.json", null, Phaser.Tilemap.TILED_JSON);
+    game.load.image("sheet", "assets/gfx/sheet.png", 64, 64);
+    game.load.spritesheet("player", "assets/gfx/player.png", 128, 128);
+};

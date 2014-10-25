@@ -16,8 +16,28 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var WIDTH = 960;//240;
-var HEIGHT = 540;//135;
+// Include all input stuff here
 
-var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'gameDiv', {preload: 
-    preload, create: create, update: update});
+function isLeftKeyDown() {
+    var isDown = false;
+    isDown = game.input.keyboard.isDown(Phaser.Keyboard.A);
+    return isDown;
+}
+
+function isRightKeyDown() {
+    var isDown = false;
+    isDown = game.input.keyboard.isDown(Phaser.Keyboard.D);
+    return isDown;
+}
+
+function isUpKeyDown() {
+    var isDown = false;
+    isDown = game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR);
+    return isDown;
+}
+
+function isRunKeyDown() {
+    var isDown = false;
+    isDown = game.input.keyboard.isDown(Phaser.Keyboard.SHIFT);
+    return isDown;
+}
