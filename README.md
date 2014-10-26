@@ -6,6 +6,7 @@ Table of contents
 * [Idea](#idea)
 * [Story](#story)
 * [License](#license)
+* [Credits](#credits)
 * [Tools](#tools)
 
 Idea
@@ -20,9 +21,20 @@ Even after this, the sister didn't give up her plans...
 
 License
 -------
-Source code license: [GNU GPL v3.0](http://www.gnu.org/licenses/gpl-3.0.txt)  
+Source code license: [GNU GPL v3.0](http://www.gnu.org/licenses/gpl-3.0)  
 Graphics and music license: [CC-BY-SA](http://creativecommons.org/licenses/by-sa/4.0/)
+
+Credits
+-------
+Engine: [Phaser](https://github.com/photonstorm/phaser)  
+Other code: [Jeasonfire](https://jeasonfire.github.io)  
+A few sprites: [Jeasonfire](https://jeasonfire.github.io)  
+Most of the sprites: [RLTiles](http://rltiles.sf.net)  
+Music: [Jeasonfire](https://jeasonfire.github.io)  
+Sfx: [Bfxr](http://www.bfxr.net/)  
 
 Tools
 -----
-[Phaser](https://github.com/photonstorm/phaser)
+Engine/library that the game is based on/made with: [Phaser](https://github.com/photonstorm/phaser)
+Maps made with: [Tiled](http://www.mapeditor.org/)
+Programming with: [Sublime Text 3](http://www.sublimetext.com/3)
