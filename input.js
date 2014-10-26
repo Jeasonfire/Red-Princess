@@ -41,3 +41,21 @@ function isRunKeyDown() {
     isDown = game.input.keyboard.isDown(Phaser.Keyboard.SHIFT);
     return isDown;
 }
+
+function getMouseX() {
+	var coord = 0;
+	coord = game.input.x;
+	return coord;
+}
+
+function getMouseY() {
+	var coord = 0;
+	coord = game.input.y;
+	return coord;
+}
+
+function isFireKeyDown() {
+	var isDown = false;
+	isDown = game.input.activePointer.isDown;
+	return isDown;
+}

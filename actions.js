@@ -16,11 +16,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- // Load files here
+// Include all actions used by objects ingame eg. player firing a fireball
 
-function preload() {
-    game.load.tilemap("level", "assets/levels/map.json", null, Phaser.Tilemap.TILED_JSON);
-    game.load.image("sheet", "assets/gfx/sheet.png", 64, 64);
-    game.load.image("fireball", "assets/gfx/fireball.png");
-    game.load.spritesheet("player", "assets/gfx/player.png", 128, 128);
-};
+// Fireball init
+var FIREBALL_SPEED = 1500;
+
+function fireProjectile(parent, xOffset, yOffset, direction, name) {
+    var projectile = game.add.sprite(0, 0, name);
+    projectile.anchor.setTo(0.5, 0.5);
+    game.physics.enable(projectile, Phaser.Physics.ARCADE);
+    projectile.body.gravity.y = -GRAVITY;
+    projectile.checkWorldBounds = true;
+    projectile.outOfBoundsKill = true;
+    projectile.reset(parent.body.x + xOffset, parent.body.y + yOffset);
+    projectile.anchor.setTo(0.5, 0.5);
+    if (direction == "left") {
+        projectile.body.velocity.x = -FIREBALL_SPEED;
+    }
+    if (direction == "right") {
+        projectile.body.velocity.x = FIREBALL_SPEED;
+    }
+}
