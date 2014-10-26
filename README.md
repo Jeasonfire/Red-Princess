@@ -35,6 +35,6 @@ Sfx: [Bfxr](http://www.bfxr.net/)
 
 Tools
 -----
-Engine/library that the game is based on/made with: [Phaser](https://github.com/photonstorm/phaser)
-Maps made with: [Tiled](http://www.mapeditor.org/)
+Engine/library that the game is based on/made with: [Phaser](https://github.com/photonstorm/phaser)  
+Maps made with: [Tiled](http://www.mapeditor.org/)  
 Programming with: [Sublime Text 3](http://www.sublimetext.com/3)
