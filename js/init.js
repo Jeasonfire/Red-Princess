@@ -28,13 +28,14 @@ var layerForeground;
 var player;
 
 // Constants
-var PLAYER_MAX_FALLING_SPEED = 900;
+var PLAYER_MAX_FALLING_SPEED = 950;
 var GRAVITY = 2600;
 
 // Controls var leftButton; var rightButton; var jumpButton;
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.time.deltaCap = 0.032;
     game.stage.backgroundColor = "#000000";
 
     // Map

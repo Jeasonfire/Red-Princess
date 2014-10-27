@@ -18,15 +18,17 @@
 
 // Include functions related to player
 
-var PLAYER_SPEED = 500;
+var PLAYER_SPEED = 450;
 var PLAYER_SPEED_RUN = PLAYER_SPEED * 2;
-var PLAYER_JUMP_SPEED = -800;
-var PLAYER_VARIABLE_JUMP_TIME = 300;
+var PLAYER_JUMP_SPEED = -950;
+var PLAYER_VARIABLE_JUMP_TIME = 200;
 
 var pRunning = false;
 var pOnFloor = false;
+var pFiring = false;
 var pSpeed = PLAYER_SPEED;
 var pDir = "still"; // This should only be "still", "left" or "right"
+var pLastDir = pDir;
 var pJumpTime = 0; // Used for variable jump timing
 
 function playerInput() {
@@ -60,6 +62,7 @@ function playerInput() {
 function playerUpdate() {
 	pRunning = pSpeed > PLAYER_SPEED;
 	pOnFloor = player.body.onFloor();
+	pLastDir = pDir;
 	if (player.body.velocity.x < 0) {
 		pDir = "left";
 	} else if (player.body.velocity.x > 0) {

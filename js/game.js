@@ -18,12 +18,23 @@
 
 // Include all runtime things here
 
+var firstUpdate = true;
+
 function update() {
+    handleFirstUpdate();
     handleCollisions();
     updateInputs();
     otherActions();
     animate();
     updateCamera();
+}
+
+function handleFirstUpdate() {
+    if (!firstUpdate) {
+        return;
+    }
+    firstUpdate = false;
+    spawnPlayer();
 }
 
 function handleCollisions() {
