@@ -28,8 +28,8 @@ var layerForeground;
 var player;
 
 // Constants
-var PLAYER_MAX_FALLING_SPEED = 950;
-var GRAVITY = 2600;
+var PLAYER_MAX_FALLING_SPEED = 400;
+var GRAVITY = 750;
 
 // Controls var leftButton; var rightButton; var jumpButton;
 
@@ -75,7 +75,6 @@ function create() {
     player.animations.add("fireMoveRight1", [48, 49, 50, 50, 51], 12, false);
     player.animations.add("fireMoveLeft0", [59, 58, 57, 57, 56], 12, false);
     player.animations.add("fireMoveLeft1", [55, 54, 53, 53, 52], 12, false);
-    player.body.setSize(48, 116, 40, 12);
     player.body.maxVelocity.y = PLAYER_MAX_FALLING_SPEED;
     player.frame = 6;
 

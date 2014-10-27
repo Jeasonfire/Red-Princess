@@ -18,10 +18,10 @@
 
 // Include functions related to player
 
-var PLAYER_SPEED = 450;
+var PLAYER_SPEED = 100;
 var PLAYER_SPEED_RUN = PLAYER_SPEED * 2;
-var PLAYER_JUMP_SPEED = -950;
-var PLAYER_VARIABLE_JUMP_TIME = 200;
+var PLAYER_JUMP_SPEED = -300;
+var PLAYER_VARIABLE_JUMP_TIME = 120;
 
 var pRunning = false;
 var pOnFloor = false;

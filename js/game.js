@@ -54,5 +54,5 @@ function animate() {
 }
 
 function updateCamera() {
-    game.camera.focusOnXY(player.body.x, player.body.y);
+    game.camera.focusOnXY(player.body.x + player.width / 2, player.body.y - player.height / 2);
 }

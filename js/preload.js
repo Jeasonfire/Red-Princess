@@ -20,7 +20,7 @@
 
 function preload() {
     game.load.tilemap("level", "assets/levels/map.json", null, Phaser.Tilemap.TILED_JSON);
-    game.load.image("sheet", "assets/gfx/sheet.png", 64, 64);
+    game.load.image("sheet", "assets/gfx/sheet.png");
     game.load.image("fireball", "assets/gfx/fireball.png");
-    game.load.spritesheet("player", "assets/gfx/player.png", 128, 128);
+    game.load.spritesheet("player", "assets/gfx/player.png", 32, 32);
 };
