@@ -26,22 +26,16 @@ var layerForeground;
 
 // Player
 var player;
-var playerSpeed;
-var playerJumpTime = 0;
-var playerDir = "right";
 
 // Constants
-var PLAYER_SPEED = 400;
-var PLAYER_SPEED_RUN = 750;
-var PLAYER_MAX_FALLING_SPEED = 800;
-var PLAYER_JUMP_SPEED = -900;
-var PLAYER_JUMP_HOLD_TIME = 200;
+var PLAYER_MAX_FALLING_SPEED = 950;
 var GRAVITY = 2600;
 
 // Controls var leftButton; var rightButton; var jumpButton;
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.time.deltaCap = 0.032;
     game.stage.backgroundColor = "#000000";
 
     // Map
@@ -87,6 +81,8 @@ function create() {
 
     // Gravity
     game.physics.arcade.gravity.y = GRAVITY;
+
+    initInput();
 }
 
 function spawnPlayer() {
