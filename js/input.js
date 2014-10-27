@@ -18,6 +18,15 @@
 
 // Include all input stuff here
 
+function initInput() {
+    game.input.keyboard.addKeyCapture([
+        Phaser.Keyboard.A,
+        Phaser.Keyboard.D,
+        Phaser.Keyboard.SPACEBAR,
+        Phaser.Keyboard.SHIFT
+    ]);
+}
+
 function isLeftKeyDown() {
     var isDown = false;
     isDown = game.input.keyboard.isDown(Phaser.Keyboard.A);
