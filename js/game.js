@@ -39,6 +39,7 @@ function handleFirstUpdate() {
 
 function handleCollisions() {
     game.physics.arcade.collide(player, layerPlayer);
+    game.physics.arcade.collide(player, layerKill, playerDie);
 }
 
 function updateInputs() {

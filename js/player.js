@@ -103,13 +103,15 @@ function playerUpdate() {
 
 function playerDie(player, layer) {
     pDead = true;
-    console.log("dead");
+    player.body.velocity.x = 0;
 }
 
 function playerAnimate() {
     restartAnimationParams();
     if (pDead && pDir == "still" && pOnFloor) {
-        setAnimationAndPlay(100, "dead");
+        if (pAnimCurrent != "dead") {
+            setAnimationAndPlay(100, "dead");
+        }
     } else if (pDir == "still") {
         // Player not moving left or right
         if (pOnFloor) {
@@ -141,7 +143,8 @@ function playerAnimate() {
 
 function restartAnimationParams() {
     pAnimPlay = false;
-    if (player.animations.getAnimation(pAnimCurrent).isFinished) {
+    if (player.animations.getAnimation(pAnimCurrent).isFinished &&
+            pAnimCurrent != "dead") {
         pAnimPriority = 0;
         setAnimationAndPlay(0, "standstill");
     }

@@ -43,6 +43,7 @@ function create() {
     map = game.add.tilemap("level");
     map.addTilesetImage("sheet");
     map.setCollisionByExclusion([], true, "Player");
+    map.setCollisionByExclusion([], true, "Kill");
     // Background layer
     layerBackground = map.createLayer("Background", map.widthInPixels, map.heightInPixels);
     layerBackground.fixedToCamera = false;
@@ -53,7 +54,6 @@ function create() {
     // Collide layer
     layerKill = map.createLayer("Kill", map.widthInPixels, map.heightInPixels);
     layerKill.fixedToCamera = false;
-    game.physics.arcade.overlap(player, layerKill, playerDie);
     // Foreground layer
     layerForeground = map.createLayer("Foreground", map.widthInPixels, map.heightInPixels);
     layerForeground.fixedToCamera = false;
@@ -66,7 +66,7 @@ function create() {
     player.animations.add("walkright", [0, 1, 2, 1], 6, true);
     player.animations.add("walkleft", [5, 4, 3, 4], 6, true);
     player.animations.add("standstill", [6], 10, true);
-    player.animations.add("dead", [56, 57, 58], 5, false);
+    player.animations.add("dead", [60, 61, 62], 5, false);
     // Jump anims
     player.animations.add("jumpright", [7, 8, 9, 8], 9, true);
     player.animations.add("jumpleft", [12, 11, 10, 11], 9, true);
