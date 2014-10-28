@@ -1,22 +1,16 @@
 body {
-	background-color:BLACK;
-	color:RED;
-	text-align:center;
-	font-family:"Arial";
+    background-color:BLACK;
+    color:RED;
+    text-align:center;
+    font-family:"Arial";
 }
 
 a {
-	color:ORANGE;
+    color:ORANGE;
 }
 
 canvas {
-	background-color:WHITE;
-	margin-left:auto;
-	margin-right:auto;
-	width:80%;
-	/*image-rendering: -moz-crisp-edges;
-	image-rendering:   -o-crisp-edges;
-	image-rendering: -webkit-optimize-contrast;
-	image-rendering: crisp-edges;
-	-ms-interpolation-mode: nearest-neighbor;*/
+    background-color:#2F2F2F;
+    margin-left:auto;
+    margin-right:auto;
 }

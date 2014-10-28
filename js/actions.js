@@ -19,10 +19,37 @@
 // Include all actions used by objects ingame eg. player firing a fireball
 
 // Fireball init
-var FIREBALL_SPEED = 1500;
+var FIREBALL_SPEED = 750;
+var NUM_OF_PARTICLES = 5;
+
+// Particle animations
+var fireballs;
+
+function initActions() {
+    fireballs = game.add.group();
+    for (var i = 0; i < NUM_OF_PARTICLES; i++) {
+        var particle = game.add.sprite(0, 0, "fireball");
+        particle.animations.add("right", [0, 1, 2, 3, 4, 5, 6, 7], 48, true);
+        particle.animations.add("left", [8, 9, 10, 11, 12, 13, 14, 15], 48, true);
+        fireballs.add(particle);
+        particle.anchor.setTo(0.5, 0.5);
+        particle.kill();
+    }
+}
 
 function fireProjectile(parent, xOffset, yOffset, direction, name) {
-    var projectile = game.add.sprite(0, 0, name);
+    var projectile;
+    if (name == "fireball") {
+        projectile = fireballs.getFirstDead();
+        if (projectile === null || projectile === undefined) {
+            fireballs.getFirstAlive().kill();
+            fireProjectile(parent, xOffset, yOffset, direction, name);
+            return;
+        }
+        projectile.revive();
+    } else {
+        projectile = game.add.sprite(0, 0, name);
+    }
     projectile.anchor.setTo(0.5, 0.5);
     game.physics.enable(projectile, Phaser.Physics.ARCADE);
     projectile.body.gravity.y = -GRAVITY;
@@ -36,4 +63,5 @@ function fireProjectile(parent, xOffset, yOffset, direction, name) {
     if (direction == "right") {
         projectile.body.velocity.x = FIREBALL_SPEED;
     }
+    projectile.animations.play(direction);
 }

@@ -18,6 +18,15 @@
 
 // Include all input stuff here
 
+function initInput() {
+    game.input.keyboard.addKeyCapture([
+        Phaser.Keyboard.A,
+        Phaser.Keyboard.D,
+        Phaser.Keyboard.SPACEBAR,
+        Phaser.Keyboard.SHIFT
+    ]);
+}
+
 function isLeftKeyDown() {
     var isDown = false;
     isDown = game.input.keyboard.isDown(Phaser.Keyboard.A);
@@ -43,19 +52,19 @@ function isRunKeyDown() {
 }
 
 function getMouseX() {
-	var coord = 0;
-	coord = game.input.x;
-	return coord;
+    var coord = 0;
+    coord = game.input.x;
+    return coord;
 }
 
 function getMouseY() {
-	var coord = 0;
-	coord = game.input.y;
-	return coord;
+    var coord = 0;
+    coord = game.input.y;
+    return coord;
 }
 
 function isFireKeyDown() {
-	var isDown = false;
-	isDown = game.input.activePointer.isDown;
-	return isDown;
+    var isDown = false;
+    isDown = game.input.activePointer.isDown;
+    return isDown;
 }
