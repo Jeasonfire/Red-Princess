@@ -18,16 +18,19 @@
 
 // Include functions related to player
 
-var PLAYER_SPEED = 100;
-var PLAYER_SPEED_RUN = PLAYER_SPEED * 2;
-var PLAYER_JUMP_SPEED = -300;
-var PLAYER_VARIABLE_JUMP_TIME = 120;
+var PLAYER_SPEED = 350;
+var PLAYER_SPEED_RUN = PLAYER_SPEED * 1.6;
+var PLAYER_JUMP_SPEED = -800;
+var PLAYER_VARIABLE_JUMP_TIME = 275;
 
+var pDead = false;
 var pRunning = false;
 var pOnFloor = false;
 var pFiring = false;
 var pFiringHand = 0;
 var pFiringDirection = "right";
+var pFiringTime = 0;
+var pCanFire = true;
 var pSpeed = PLAYER_SPEED;
 var pDir = "still"; // This should only be "still", "left" or "right"
 var pLastDir = pDir;
@@ -37,6 +40,9 @@ var pAnimCurrent = "standstill";
 var pAnimPlay = false;
 
 function playerInput() {
+    if (pDead) {
+        return;
+    }
     // Running
     if (isRunKeyDown() && pOnFloor) {
         pSpeed = PLAYER_SPEED_RUN;
@@ -62,6 +68,21 @@ function playerInput() {
     }
 
     // Firing
+    if (isFireKeyDown() && pCanFire) {
+        pFiring = true;
+        pCanFire = false;
+        pFiringTime = game.time.now + 1000 / 12 * 3;
+        if (getMouseX() < 400) {
+            pFiringDirection = "left";
+        } else {
+            pFiringDirection = "right";
+        }
+        if (pFiringHand == 0) {
+            pFiringHand = 1;
+        } else {
+            pFiringHand = 0;
+        }
+    }
 }
 
 function playerUpdate() {
@@ -75,38 +96,54 @@ function playerUpdate() {
     } else {
         pDir = "still";
     }
+    if (pFiring && game.time.now > pFiringTime) {
+        pFiring = false;
+    }
+}
+
+function playerDie(player, layer) {
+    pDead = true;
+    console.log("dead");
 }
 
 function playerAnimate() {
     restartAnimationParams();
-    if (pDir == "still") {
+    if (pDead && pDir == "still" && pOnFloor) {
+        setAnimationAndPlay(100, "dead");
+    } else if (pDir == "still") {
         // Player not moving left or right
         if (pOnFloor) {
             setAnimationAndPlay(1, "standstill");
+            if (pFiring) {
+                setAnimationAndPlay(3, "fire" + pFiringDirection + pFiringHand);
+            }
         } else {
             setAnimationAndPlay(1, "jumpstill");
         }
     } else {
-        if (!pOnFloor) {
-            // In air, play air animation
-            setAnimationAndPlay(2, "jump" + pDir);
-        }
         if (!pRunning) {
             // Not running, walk around
             setAnimationAndPlay(1, "walk" + pDir);
+            if (pFiring) {
+                setAnimationAndPlay(3, "firewalk" + pFiringDirection + pFiringHand);
+            }
         } else {
             // Running, run around
             setAnimationAndPlay(1, "run" + pDir);
+        }
+        if (!pOnFloor) {
+            // In air, play air animation
+            setAnimationAndPlay(1, "jump" + pDir);
         }
     }
     playAnimation();
 }
 
 function restartAnimationParams() {
-    pAnimPriority = 0;
     pAnimPlay = false;
     if (player.animations.getAnimation(pAnimCurrent).isFinished) {
-        pAnimCurrent = "";
+        pAnimPriority = 0;
+        setAnimationAndPlay(0, "standstill");
     }
 }
 
@@ -133,7 +170,7 @@ function setAnimPlay(animPriority, play) {
 }
 
 function playAnimation() {
-    if (!pAnimPlay) {
+    if (!pAnimPlay || player.animations.getAnimation(pAnimCurrent).isPlaying) {
         return;
     }
     player.animations.play(pAnimCurrent);

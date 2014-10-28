@@ -16,8 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var WIDTH = 320;
-var HEIGHT = 180;
+var WIDTH = 800;
+var HEIGHT = 450;
 
 var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'gameDiv', {preload: 
     preload, create: create, update: update});

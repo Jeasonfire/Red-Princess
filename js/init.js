@@ -22,14 +22,15 @@
 var map;
 var layerBackground;
 var layerPlayer;
+var layerKill;
 var layerForeground;
 
 // Player
 var player;
 
 // Constants
-var PLAYER_MAX_FALLING_SPEED = 400;
-var GRAVITY = 750;
+var PLAYER_MAX_FALLING_SPEED = 950;
+var GRAVITY = 1500;
 
 // Controls var leftButton; var rightButton; var jumpButton;
 
@@ -49,6 +50,10 @@ function create() {
     layerPlayer = map.createLayer("Player", map.widthInPixels, map.heightInPixels);
     layerPlayer.fixedToCamera = false;
     layerPlayer.resizeWorld();
+    // Collide layer
+    layerKill = map.createLayer("Kill", map.widthInPixels, map.heightInPixels);
+    layerKill.fixedToCamera = false;
+    game.physics.arcade.overlap(player, layerKill, playerDie);
     // Foreground layer
     layerForeground = map.createLayer("Foreground", map.widthInPixels, map.heightInPixels);
     layerForeground.fixedToCamera = false;
@@ -61,6 +66,7 @@ function create() {
     player.animations.add("walkright", [0, 1, 2, 1], 6, true);
     player.animations.add("walkleft", [5, 4, 3, 4], 6, true);
     player.animations.add("standstill", [6], 10, true);
+    player.animations.add("dead", [56, 57, 58], 5, false);
     // Jump anims
     player.animations.add("jumpright", [7, 8, 9, 8], 9, true);
     player.animations.add("jumpleft", [12, 11, 10, 11], 9, true);
@@ -83,7 +89,7 @@ function create() {
 
     // Set player variables
     player.body.maxVelocity.y = PLAYER_MAX_FALLING_SPEED;
-    player.body.setSize(12, 29, 10, 3);
+    player.body.setSize(36, 87, 30, 9);//(12, 29, 10, 3);
     player.frame = 6;
 
     // Gravity
