@@ -96,6 +96,7 @@ function create() {
     game.physics.arcade.gravity.y = GRAVITY;
 
     initInput();
+    initActions();
 }
 
 function spawnPlayer() {
