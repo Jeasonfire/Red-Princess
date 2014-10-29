@@ -19,11 +19,11 @@
 // Include all actions used by objects ingame eg. player firing a fireball
 
 // Fireball init
-var FIREBALL_SPEED = 750;
+var FIREBALL_SPEED = 400;
 var NUM_OF_PARTICLES = 5;
 
 // Particle animations
-var fireballs;
+var fireballs;d
 
 function initActions() {
     fireballs = game.add.group();
@@ -32,7 +32,6 @@ function initActions() {
         particle.animations.add("right", [0, 1, 2, 3, 4, 5, 6, 7], 48, true);
         particle.animations.add("left", [8, 9, 10, 11, 12, 13, 14, 15], 48, true);
         fireballs.add(particle);
-        particle.anchor.setTo(0.5, 0.5);
         particle.kill();
     }
 }
@@ -56,7 +55,6 @@ function fireProjectile(parent, xOffset, yOffset, direction, name) {
     projectile.checkWorldBounds = true;
     projectile.outOfBoundsKill = true;
     projectile.reset(parent.body.x + xOffset, parent.body.y + yOffset);
-    projectile.anchor.setTo(0.5, 0.5);
     if (direction == "left") {
         projectile.body.velocity.x = -FIREBALL_SPEED;
     }

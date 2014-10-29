@@ -18,10 +18,10 @@
 
 // Include functions related to player
 
-var PLAYER_SPEED = 350;
+var PLAYER_SPEED = 150;
 var PLAYER_SPEED_RUN = PLAYER_SPEED * 1.6;
-var PLAYER_JUMP_SPEED = -800;
-var PLAYER_VARIABLE_JUMP_TIME = 150;
+var PLAYER_JUMP_SPEED = -350;
+var PLAYER_VARIABLE_JUMP_TIME = 275;
 
 var pDead = false;
 var pRunning = false;
@@ -68,15 +68,11 @@ function playerInput() {
     }
 
     // Firing
-    if (isFireKeyDown() && pCanFire && pOnFloor && !pRunning) {
+    if (isFireKeyDown() && pCanFire && pOnFloor && !pRunning &&
+    		pFiringDirection != "still") {
         pFiring = true;
         pCanFire = false;
         pFiringTime = game.time.now + 1000 / 12 * 3;
-        if (getMouseX() < 400) {
-            pFiringDirection = "left";
-        } else {
-            pFiringDirection = "right";
-        }
     }
 }
 
@@ -86,17 +82,19 @@ function playerUpdate() {
     pLastDir = pDir;
     if (player.body.velocity.x < 0) {
         pDir = "left";
+        pFiringDirection = "left";
     } else if (player.body.velocity.x > 0) {
         pDir = "right";
+        pFiringDirection = "right";
     } else {
         pDir = "still";
     }
     if (pFiring && game.time.now > pFiringTime) {
         pFiring = false;
         if (pFiringDirection == "left") {
-            fireProjectile(player, -16, 32, "left", "fireball");
+            fireProjectile(player, 5 - 16, 12, "left", "fireball");
         } else {
-            fireProjectile(player, 56, 32, "right", "fireball");
+            fireProjectile(player, 27, 12, "right", "fireball");
         }
         if (pFiringHand == 0) {
             pFiringHand = 1;

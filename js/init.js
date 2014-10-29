@@ -30,7 +30,7 @@ var player;
 
 // Constants
 var PLAYER_MAX_FALLING_SPEED = 950;
-var GRAVITY = 1500;
+var GRAVITY = 750;
 
 // Controls var leftButton; var rightButton; var jumpButton;
 
@@ -89,7 +89,7 @@ function create() {
 
     // Set player variables
     player.body.maxVelocity.y = PLAYER_MAX_FALLING_SPEED;
-    player.body.setSize(36, 87, 30, 9);//(12, 29, 10, 3);
+    player.body.setSize(12, 29, 10, 3);//(12, 29, 10, 3);
     player.frame = 6;
 
     // Gravity
