@@ -1,3 +1,6 @@
-## Sublime Text
+## Sublime Text Files
 *.sublime-project
 *.sublime-workspace
+
+## Other ignorable files
+.directory
