@@ -17,14 +17,15 @@
  */
 
 var Load = function(game) {
-}
+    this.loadingBar = null;
+};
 
 Load.prototype = {
     preload: function() {
         // Set loading bar
-        var loadingBar = this.add.sprite(WIDTH / 2, HEIGHT / 2, "loadingBar");
-        loadingBar.anchor.setTo(0.5, 0.5);
-        this.load.setPreloadSprite(loadingBar);
+        this.loadingBar = this.add.sprite(WIDTH / 2, HEIGHT / 2, "loadingBar");
+        this.loadingBar.anchor.setTo(0.5, 0.5);
+        this.load.setPreloadSprite(this.loadingBar);
 
         // Load files
         this.game.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
@@ -32,6 +33,12 @@ Load.prototype = {
     },
 
     create: function() {
+        var tween = this.add.tween(this.loadingBar);
+        tween.to({x: WIDTH + this.loadingBar.width / 2}, 750, Phaser.Easing.Cubic.In, true, 100, false, false);
+        tween.onComplete.add(this.goToMenu);
+    },
+
+    goToMenu: function() {
         this.game.state.start("MainMenu");
     }
-}
+};

@@ -17,7 +17,7 @@
  */
 
 var Boot = function(game) {
-}
+};
 
 Boot.prototype = {
     preload: function() {
@@ -30,4 +30,4 @@ Boot.prototype = {
         this.scale.setScreenSize();
         this.game.state.start("Load");
     }
-}
+};

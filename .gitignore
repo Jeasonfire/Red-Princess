@@ -2,5 +2,8 @@
 *.sublime-project
 *.sublime-workspace
 
+## Webstorm files
+.idea
+
 ## Other ignorable files
 .directory
