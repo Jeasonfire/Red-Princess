@@ -28,8 +28,7 @@ Credits
 -------
 Engine: [Phaser](https://github.com/photonstorm/phaser)  
 Other code: [Jeasonfire](https://jeasonfire.github.io)  
-A few sprites: [Jeasonfire](https://jeasonfire.github.io)  
-Most of the sprites: [RLTiles](http://rltiles.sf.net)  
+Graphics: [Jeasonfire](https://jeasonfire.github.io)  
 Music: [Jeasonfire](https://jeasonfire.github.io)  
 Sfx: [Bfxr](http://www.bfxr.net/)  
 
@@ -37,4 +36,4 @@ Tools
 -----
 Engine/library that the game is based on/made with: [Phaser](https://github.com/photonstorm/phaser)  
 Maps made with: [Tiled](http://www.mapeditor.org/)  
-Programming with: [Sublime Text 3](http://www.sublimetext.com/3)
+Programming with: [Atom](https://atom.io)

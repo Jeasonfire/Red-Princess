@@ -17,11 +17,16 @@
  */
 
 var Game = function(game) {
+    this.level = null;
+    this.player = null;
 };
 
 Game.prototype = {
     create: function() {
-
+        this.level = new Level();
+        this.level.create();
+        this.player = new Player(this, 0, 0);
+        this.player.create();
     },
 
     update: function() {

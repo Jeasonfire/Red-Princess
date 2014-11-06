@@ -15,3 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/* When player is pressing space, set gravity to 1/2 of normal gravity. This makes it so the player jumps higher when space is held, gives a gliding effect and much more realistic jumps when holding space (no linear "going-up" phases) */
+
+var Player = function(game, x, y) {
+    Phaser.Sprite.call(this, game, x, y, "player");
+};
+
+Player.prototype = Object.create(Phaser.Sprite.prototype);
+Player.prototype.constructor = Player;
+
+Player.prototype = {
+};

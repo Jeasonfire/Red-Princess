@@ -30,6 +30,7 @@ Load.prototype = {
         // Load files
         this.game.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
         this.game.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
+        this.game.load.spritesheet("player", "assets/gfx/player/playerHex.png", 92, 96);
     },
 
     create: function() {
