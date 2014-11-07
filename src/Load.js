@@ -28,9 +28,11 @@ Load.prototype = {
         this.load.setPreloadSprite(this.loadingBar);
 
         // Load files
-        this.game.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
-        this.game.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
-        this.game.load.spritesheet("player", "assets/gfx/player/playerHex.png", 92, 96);
+        this.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
+        this.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
+        this.load.image("tileset", "assets/gfx/map/tileset.png");
+        this.load.tilemap("map", 'assets/levels/map.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.spritesheet("player", "assets/gfx/player/playerHex.png", 92, 96);
     },
 
     create: function() {

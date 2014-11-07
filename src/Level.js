@@ -16,10 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var Level = function() {
+var Level = function(game) {
+    this.game = game;
+    this.map = null;
 };
 
 Level.prototype = {
     create: function() {
+        this.map = this.game.add.tilemap("map");
+        map.addTilesetImage("tileset");
+    },
+
+    update: function(player) {
+        this.game.physics.arcade.collide(player/*, layer*/);
     }
 };

@@ -18,12 +18,14 @@
 
 /* When player is pressing space, set gravity to 1/2 of normal gravity. This makes it so the player jumps higher when space is held, gives a gliding effect and much more realistic jumps when holding space (no linear "going-up" phases) */
 
-var Player = function(game, x, y) {
-    Phaser.Sprite.call(this, game, x, y, "player");
+var Player = function(game) {
+    this.game = game;
+    this.player = null;
 };
 
-Player.prototype = Object.create(Phaser.Sprite.prototype);
-Player.prototype.constructor = Player;
-
 Player.prototype = {
+    create: function() {
+        this.player = this.game.add.sprite(0, 0, "player");
+        this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+    }
 };

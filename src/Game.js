@@ -23,9 +23,12 @@ var Game = function(game) {
 
 Game.prototype = {
     create: function() {
+        this.physics.startSystem(Phaser.Physics.ARCADE);
+        this.physics.arcade.gravity.y = 1400;
+
         this.level = new Level();
         this.level.create();
-        this.player = new Player(this, 0, 0);
+        this.player = new Player(this);
         this.player.create();
     },
 
