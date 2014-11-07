@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var PLAYER_CAMERA_DIST = 200;
+var GRAVITY = 1600;
+
 var Game = function(game) {
     this.level = null;
     this.player = null;
@@ -24,15 +27,18 @@ var Game = function(game) {
 Game.prototype = {
     create: function() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.physics.arcade.gravity.y = 1400;
+        this.physics.arcade.gravity.y = GRAVITY;
+        this.deltaCap = 0.032;
 
-        this.level = new Level();
+        this.level = new Level(this);
         this.level.create();
         this.player = new Player(this);
         this.player.create();
+        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN);
     },
 
     update: function() {
-
+        // Update player
+        this.player.update(this.level.layerCollision);
     }
 };

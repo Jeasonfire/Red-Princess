@@ -27,6 +27,9 @@ Load.prototype = {
         this.loadingBar.anchor.setTo(0.5, 0.5);
         this.load.setPreloadSprite(this.loadingBar);
 
+        // Setup input
+        input.create();
+
         // Load files
         this.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
         this.load.image("mmPlay", "assets/gfx/mainmenu/play.png");

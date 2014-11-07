@@ -20,12 +20,85 @@
 
 var Player = function(game) {
     this.game = game;
-    this.player = null;
+    this.sprite = null;
+
+    this.WALK_SPEED = 300;
+    this.RUN_SPEED = 600;
+    this.JUMP_SPEED = -900;
+
+    this.speed = this.WALK_SPEED;
+    this.direction = "right";
+    this.isRunning = false;
+    this.onFloor = false;
+    this.isMoving = false;
 };
 
 Player.prototype = {
     create: function() {
-        this.player = this.game.add.sprite(0, 0, "player");
-        this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+        this.sprite = this.game.add.sprite(0, 0, "player");
+        this.sprite.animations.add("standright", [0], 1, true);
+        this.sprite.animations.add("standleft", [2], 1, true);     this.sprite.animations.add("walkright", [0, 1], 8, true);
+        this.sprite.animations.add("walkleft", [2, 3], 8, true);
+        this.sprite.animations.add("runright", [4, 5], 12, true);
+        this.sprite.animations.add("runleft", [6, 7], 12, true);
+        this.sprite.animations.add("upright", [8, 9], 10, true);
+        this.sprite.animations.add("upleft", [10, 11], 10, true);
+        this.sprite.animations.add("downright", [12, 13], 10, true);
+        this.sprite.animations.add("downleft", [14, 15], 10, true);
+
+        this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
+    },
+
+    update: function(layer) {
+        this.game.physics.arcade.collide(this.sprite, layer);
+        this.updateInput();
+        this.updateAnimation();
+    },
+
+    updateInput: function() {
+        var speed = this.WALK_SPEED;
+        this.isRunning = false;
+        if (input.pressedRun()) {
+            speed = this.RUN_SPEED;
+            this.isRunning = true;
+        }
+
+        this.isMoving = true;
+        if (input.pressedLeft() && !input.pressedRight()) {
+            this.speed = -speed;
+            this.direction = "left";
+        } else if (input.pressedRight() && !input.pressedLeft()) {
+            this.speed = speed;
+            this.direction = "right";
+        } else {
+            this.speed = 0;
+            this.isMoving = false;
+        }
+        this.sprite.body.velocity.x = this.speed;
+
+        this.onFloor = this.sprite.body.onFloor();
+        if (input.pressedUp() && this.onFloor) {
+            this.sprite.body.velocity.y = this.JUMP_SPEED;
+        }
+    },
+
+    updateAnimation: function() {
+        if (this.onFloor) {
+            if (this.isMoving) {
+                if (this.isRunning) {
+                    this.sprite.animations.play("run" + this.direction);
+                } else {
+                    this.sprite.animations.play("walk" + this.direction);
+                }
+            } else {
+                this.sprite.animations.play("stand" + this.direction);
+            }
+        } else {
+            if (this.sprite.body.velocity.y > 0) {
+                this.sprite.animations.play("down" + this.direction);
+            } else {
+                this.sprite.animations.play("up" + this.direction);
+            }
+        }
     }
 };

@@ -19,15 +19,19 @@
 var Level = function(game) {
     this.game = game;
     this.map = null;
+    this.layerCollision = null;
 };
 
 Level.prototype = {
     create: function() {
         this.map = this.game.add.tilemap("map");
-        map.addTilesetImage("tileset");
-    },
-
-    update: function(player) {
-        this.game.physics.arcade.collide(player/*, layer*/);
+        this.map.addTilesetImage("tileset");
+        this.map.setCollisionByExclusion([], true, "Mid");
+        var back = this.map.createLayer("Back", this.map.widthInPixels, this.map.heightInPixels);
+        back.fixedToCamera = false;
+        this.layerCollision = this.map.createLayer("Mid");
+        this.layerCollision.fixedToCamera = false;
+        var front = this.map.createLayer("Front");
+        front.fixedToCamera = false;
     }
 };
