@@ -34,6 +34,8 @@ var Player = function(game) {
     this.isMoving = false;
     this.canDoubleJump = true;
     this.jumpTime = 0;
+
+    this.emitterJump = null;
 };
 
 Player.prototype = {
@@ -52,13 +54,19 @@ Player.prototype = {
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL);
-        this.sprite.body.setSize(60, 88, 18, 8);
+        this.sprite.body.setSize(36, 88, 30, 8);
+
+        this.emitterJump = this.game.add.emitter();
+        this.emitterJump.makeParticles("particleFire");
+        this.emitterJump.setAlpha(0.2);
+        this.emitterJump.setScale(0.4);
     },
 
     update: function(layer) {
         this.game.physics.arcade.collide(this.sprite, layer);
         this.updateInput();
         this.updateAnimation();
+        this.updateEmitters();
     },
 
     updateInput: function() {
@@ -93,6 +101,7 @@ Player.prototype = {
             this.jumpTime = this.game.time.now + JUMP_RESET_TIME;
             this.sprite.body.velocity.y = this.JUMP_SPEED;
             if (!this.onFloor) {
+                this.emitterJump.start(true, 600, null, 25);
                 this.canDoubleJump = false;
             }
         }
@@ -116,5 +125,10 @@ Player.prototype = {
                 this.sprite.animations.play("up" + this.direction);
             }
         }
+    },
+
+    updateEmitters: function() {
+        this.emitterJump.x = this.sprite.x + this.sprite.width / 2;
+        this.emitterJump.y = this.sprite.y + this.sprite.height;
     }
 };

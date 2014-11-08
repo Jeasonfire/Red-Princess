@@ -25,9 +25,6 @@ Boot.prototype = {
     },
 
     create: function() {
-        /*this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        this.scale.pageAlignHorizontally = true;
-        this.scale.setScreenSize();*/
         this.scale.setMaximum();
         this.scale.refresh();
         this.game.state.start("Load");
