@@ -57,6 +57,8 @@ Player.prototype = {
         this.sprite.animations.add("downleft", [9], 1, true);
         this.sprite.animations.add("fireright", [10, 12], 6, false);
         this.sprite.animations.add("fireleft", [11, 13], 6, false);
+        this.sprite.animations.add("firewalkright", [10, 14], 6, false);
+        this.sprite.animations.add("firewalkleft", [11, 15], 6, false);
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL);
@@ -138,7 +140,12 @@ Player.prototype = {
                 if (this.isRunning) {
                     this.sprite.animations.play("run" + this.direction);
                 } else {
-                    this.sprite.animations.play("walk" + this.direction);
+                    if (this.firing && !this.firingAnim) {
+                        this.sprite.animations.play("firewalk" + this.direction);
+                        this.firingAnim = true;
+                    } else if (!this.firingAnim) {
+                        this.sprite.animations.play("walk" + this.direction);
+                    }
                 }
             } else {
                 if (this.firing && !this.firingAnim) {
