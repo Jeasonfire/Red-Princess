@@ -35,10 +35,13 @@ Game.prototype = {
         this.player = new Player(this);
         this.player.create();
         this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+
+        initMissiles(this);
     },
 
     update: function() {
         // Update player
         this.player.update(this.level.layerCollision);
+        updateMissiles();
     }
 };

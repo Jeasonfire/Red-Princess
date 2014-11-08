@@ -34,6 +34,10 @@ var Player = function(game) {
     this.isMoving = false;
     this.canDoubleJump = true;
     this.jumpTime = 0;
+    this.firing = false;
+    this.firingAnim = false;
+    this.firingTime = 0;
+    this.fired = false;
 
     this.emitterJump = null;
 };
@@ -51,15 +55,17 @@ Player.prototype = {
         this.sprite.animations.add("upleft", [7], 1, true);
         this.sprite.animations.add("downright", [8], 1, true);
         this.sprite.animations.add("downleft", [9], 1, true);
+        this.sprite.animations.add("fireright", [10, 12], 6, false);
+        this.sprite.animations.add("fireleft", [11, 13], 6, false);
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL);
         this.sprite.body.setSize(36, 88, 30, 8);
+        this.sprite.body.drag.x = 200;
 
         this.emitterJump = this.game.add.emitter();
         this.emitterJump.makeParticles("particleFire");
-        this.emitterJump.setAlpha(0.2);
-        this.emitterJump.setScale(0.4);
+        this.emitterJump.setScale(0.5);
     },
 
     update: function(layer) {
@@ -105,6 +111,25 @@ Player.prototype = {
                 this.canDoubleJump = false;
             }
         }
+
+        if (this.firingAnim && this.fired && this.game.time.now > this.firingTime) {
+            this.firingAnim = false;
+            this.firing = false;
+            this.fired = false;
+        }
+        if (input.pressedFire() && !this.firing) {
+            this.firing = true;
+            this.firingTime = this.game.time.now + 1000 / 6;
+        }
+        if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
+            if (this.direction == "left") {
+                launchMissile(this.direction, this.sprite.x + 29, this.sprite.y + 43);
+            } else {
+                launchMissile(this.direction, this.sprite.x + 67, this.sprite.y + 43);
+            }
+            this.fired = true;
+            this.firingTime = this.game.time.now + 1000 / 6;
+        }
     },
 
     updateAnimation: function() {
@@ -116,7 +141,12 @@ Player.prototype = {
                     this.sprite.animations.play("walk" + this.direction);
                 }
             } else {
-                this.sprite.animations.play("stand" + this.direction);
+                if (this.firing && !this.firingAnim) {
+                    this.sprite.animations.play("fire" + this.direction);
+                    this.firingAnim = true;
+                } else if (!this.firingAnim) {
+                    this.sprite.animations.play("stand" + this.direction);
+                }
             }
         } else {
             if (this.sprite.body.velocity.y > 0) {
