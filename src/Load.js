@@ -35,7 +35,7 @@ Load.prototype = {
         this.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
         this.load.image("tileset", "assets/gfx/map/tileset.png");
         this.load.tilemap("map", 'assets/levels/map.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.spritesheet("player", "assets/gfx/player/playerHex.png", 92, 96);
+        this.load.spritesheet("player", "assets/gfx/player/player.png", 96, 96);
     },
 
     create: function() {

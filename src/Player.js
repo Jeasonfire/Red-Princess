@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* When player is pressing space, set gravity to 1/2 of normal gravity. This makes it so the player jumps higher when space is held, gives a gliding effect and much more realistic jumps when holding space (no linear "going-up" phases) */
+var MAX_VEL = 1000;
+var JUMP_RESET_TIME = 100;
 
 var Player = function(game) {
     this.game = game;
     this.sprite = null;
 
-    this.WALK_SPEED = 300;
+    this.WALK_SPEED = 400;
     this.RUN_SPEED = 600;
     this.JUMP_SPEED = -900;
 
@@ -31,22 +32,27 @@ var Player = function(game) {
     this.isRunning = false;
     this.onFloor = false;
     this.isMoving = false;
+    this.canDoubleJump = true;
+    this.jumpTime = 0;
 };
 
 Player.prototype = {
     create: function() {
         this.sprite = this.game.add.sprite(0, 0, "player");
         this.sprite.animations.add("standright", [0], 1, true);
-        this.sprite.animations.add("standleft", [2], 1, true);     this.sprite.animations.add("walkright", [0, 1], 8, true);
-        this.sprite.animations.add("walkleft", [2, 3], 8, true);
-        this.sprite.animations.add("runright", [4, 5], 12, true);
-        this.sprite.animations.add("runleft", [6, 7], 12, true);
-        this.sprite.animations.add("upright", [8, 9], 10, true);
-        this.sprite.animations.add("upleft", [10, 11], 10, true);
-        this.sprite.animations.add("downright", [12, 13], 10, true);
-        this.sprite.animations.add("downleft", [14, 15], 10, true);
+        this.sprite.animations.add("standleft", [1], 1, true);
+        this.sprite.animations.add("walkright", [2, 4], 6, true);
+        this.sprite.animations.add("walkleft", [3, 5], 6, true);
+        this.sprite.animations.add("runright", [2, 4], 10, true);
+        this.sprite.animations.add("runleft", [3, 5], 10, true);
+        this.sprite.animations.add("upright", [6], 1, true);
+        this.sprite.animations.add("upleft", [7], 1, true);
+        this.sprite.animations.add("downright", [8], 1, true);
+        this.sprite.animations.add("downleft", [9], 1, true);
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
+        this.sprite.body.maxVelocity.setTo(MAX_VEL);
+        this.sprite.body.setSize(60, 88, 18, 8);
     },
 
     update: function(layer) {
@@ -57,10 +63,13 @@ Player.prototype = {
 
     updateInput: function() {
         var speed = this.WALK_SPEED;
-        this.isRunning = false;
-        if (input.pressedRun()) {
+        if (input.pressedRun() && this.onFloor) {
             speed = this.RUN_SPEED;
             this.isRunning = true;
+        } else if (input.pressedRun() && !this.onFloor && this.isRunning) {
+            speed = this.RUN_SPEED;
+        } else if (!input.pressedRun()) {
+            this.isRunning = false;
         }
 
         this.isMoving = true;
@@ -77,8 +86,15 @@ Player.prototype = {
         this.sprite.body.velocity.x = this.speed;
 
         this.onFloor = this.sprite.body.onFloor();
-        if (input.pressedUp() && this.onFloor) {
+        if (this.onFloor) {
+            this.canDoubleJump = true;
+        }
+        if (input.justPressedUp() && (this.onFloor || this.canDoubleJump) && this.game.time.now > this.jumpTime) {
+            this.jumpTime = this.game.time.now + JUMP_RESET_TIME;
             this.sprite.body.velocity.y = this.JUMP_SPEED;
+            if (!this.onFloor) {
+                this.canDoubleJump = false;
+            }
         }
     },
 

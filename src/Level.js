@@ -27,11 +27,15 @@ Level.prototype = {
         this.map = this.game.add.tilemap("map");
         this.map.addTilesetImage("tileset");
         this.map.setCollisionByExclusion([], true, "Mid");
+        // Background layer
         var back = this.map.createLayer("Back", this.map.widthInPixels, this.map.heightInPixels);
         back.fixedToCamera = false;
-        this.layerCollision = this.map.createLayer("Mid");
+        // Collision layer
+        this.layerCollision = this.map.createLayer("Mid", this.map.widthInPixels, this.map.heightInPixels);
         this.layerCollision.fixedToCamera = false;
-        var front = this.map.createLayer("Front");
+        this.layerCollision.resizeWorld();
+        // Foreground layer
+        var front = this.map.createLayer("Front", this.map.widthInPixels, this.map.heightInPixels);
         front.fixedToCamera = false;
     }
 };

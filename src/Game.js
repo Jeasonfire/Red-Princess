@@ -17,7 +17,7 @@
  */
 
 var PLAYER_CAMERA_DIST = 200;
-var GRAVITY = 1600;
+var GRAVITY = 1500;
 
 var Game = function(game) {
     this.level = null;
@@ -34,7 +34,7 @@ Game.prototype = {
         this.level.create();
         this.player = new Player(this);
         this.player.create();
-        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN);
+        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
     },
 
     update: function() {

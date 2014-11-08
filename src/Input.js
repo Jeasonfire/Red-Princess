@@ -25,7 +25,7 @@ Input.prototype = {
         this.game.input.keyboard.addKeyCapture([
             Phaser.Keyboard.A,
             Phaser.Keyboard.D,
-            Phaser.Keyboard.SPACE,
+            Phaser.Keyboard.SPACEBAR,
             Phaser.Keyboard.LEFT,
             Phaser.Keyboard.RIGHT,
             Phaser.Keyboard.UP,
@@ -52,6 +52,13 @@ Input.prototype = {
         var isDown = false;
         isDown = this.game.input.keyboard.isDown(Phaser.Keyboard.UP) |
             this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR);
+        return isDown;
+    },
+
+    justPressedUp: function() {
+        var isDown = false;
+        isDown = this.game.input.keyboard.justPressed(Phaser.Keyboard.UP) |
+            this.game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR);
         return isDown;
     },
 
