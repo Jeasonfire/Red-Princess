@@ -65,7 +65,7 @@ Missile.prototype = {
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.gravity.y = -GRAVITY;
         this.sprite.body.velocity.x = MISSILE_SPEED;
-        this.emitter = game.add.emitter(0, 0);
+        this.emitter = game.add.emitter(0, 0, 200);
         this.emitter.makeParticles("particleFire");
         this.emitter.setScale(1.5);
         this.emitter.gravity = -GRAVITY;
@@ -88,7 +88,7 @@ Missile.prototype = {
         this.emitter.on = true;
         this.emitter.x = x;
         this.emitter.y = y;
-        this.emitter.start(false, 40, 40);
+        this.emitter.start(false, 80, 20, 0, true);
 
         this.killTime = this.game.time.now + MISSILE_FLYING_TIME;
     },
@@ -105,6 +105,6 @@ Missile.prototype = {
 
     explode: function(sprite, layer) {
         this.sprite.kill();
-        this.emitter.start(true, 200, 0, 5);
+        this.emitter.start(true, 500, 0, 20);
     }
 };

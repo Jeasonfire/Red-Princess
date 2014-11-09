@@ -132,14 +132,14 @@ Player.prototype = {
         }
         if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
             if (this.direction == "left") {
-                launchMissile(this.direction, this.sprite.x + 29, this.sprite.y + 43);
+                launchMissile(this.direction, this.sprite.x + 30, this.sprite.y + 43);
                 this.sprite.body.velocity.x = this.FIRING_RECOIL_X;
                 if (!this.onFloor) {
                     this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
                     this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
                 }
             } else {
-                launchMissile(this.direction, this.sprite.x + 67, this.sprite.y + 43);
+                launchMissile(this.direction, this.sprite.x + 66, this.sprite.y + 43);
                 this.sprite.body.velocity.x = -this.FIRING_RECOIL_X;
                 if (!this.onFloor) {
                     this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
