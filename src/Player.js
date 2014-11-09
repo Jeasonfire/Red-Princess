@@ -26,6 +26,9 @@ var Player = function(game) {
     this.WALK_SPEED = 400;
     this.RUN_SPEED = 600;
     this.JUMP_SPEED = -900;
+    this.FIRING_RECOIL_Y = -200;
+    this.FIRING_RECOIL_X = 400;
+    this.FIRING_FPS = 6;
 
     this.speed = this.WALK_SPEED;
     this.direction = "right";
@@ -51,14 +54,18 @@ Player.prototype = {
         this.sprite.animations.add("walkleft", [3, 5], 6, true);
         this.sprite.animations.add("runright", [2, 4], 10, true);
         this.sprite.animations.add("runleft", [3, 5], 10, true);
+        this.sprite.animations.add("jumpright", [16], 1, true);
+        this.sprite.animations.add("jumpleft", [17], 1, true);
         this.sprite.animations.add("upright", [6], 1, true);
         this.sprite.animations.add("upleft", [7], 1, true);
         this.sprite.animations.add("downright", [8], 1, true);
         this.sprite.animations.add("downleft", [9], 1, true);
-        this.sprite.animations.add("fireright", [10, 12], 6, false);
-        this.sprite.animations.add("fireleft", [11, 13], 6, false);
-        this.sprite.animations.add("firewalkright", [10, 14], 6, false);
-        this.sprite.animations.add("firewalkleft", [11, 15], 6, false);
+        this.sprite.animations.add("fireright", [10, 12], this.FIRING_FPS, false);
+        this.sprite.animations.add("fireleft", [11, 13], this.FIRING_FPS, false);
+        this.sprite.animations.add("firewalkright", [10, 14], this.FIRING_FPS, false);
+        this.sprite.animations.add("firewalkleft", [11, 15], this.FIRING_FPS, false);
+        this.sprite.animations.add("firejumpright", [16, 18], this.FIRING_FPS, false);
+        this.sprite.animations.add("firejumpleft", [17, 19], this.FIRING_FPS, false);
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL);
@@ -119,20 +126,28 @@ Player.prototype = {
             this.firing = false;
             this.fired = false;
         }
-        if (input.pressedFire() && !this.firing && this.onFloor) {
+        if (input.pressedFire() && !this.firing) {
             this.firing = true;
-            this.firingTime = this.game.time.now + 1000 / 6;
+            this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
         }
         if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
             if (this.direction == "left") {
                 launchMissile(this.direction, this.sprite.x + 29, this.sprite.y + 43);
-                this.sprite.body.velocity.x += 600;
+                this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
+                if (!this.onFloor) {
+                    this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
+                    this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
+                }
             } else {
                 launchMissile(this.direction, this.sprite.x + 67, this.sprite.y + 43);
-                this.sprite.body.velocity.x -= 600;
+                this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
+                if (!this.onFloor) {
+                    this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
+                    this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
+                }
             }
             this.fired = true;
-            this.firingTime = this.game.time.now + 1000 / 6;
+            this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS * 1.5);
         }
     },
 
@@ -158,10 +173,17 @@ Player.prototype = {
                 }
             }
         } else {
-            if (this.sprite.body.velocity.y > 0) {
-                this.sprite.animations.play("down" + this.direction);
-            } else {
-                this.sprite.animations.play("up" + this.direction);
+            if (this.firing && !this.firingAnim) {
+                this.sprite.animations.play("firejump" + this.direction);
+                this.firingAnim = true;
+            } else if (!this.firingAnim) {
+                if (this.sprite.body.velocity.y > 0) {
+                    this.sprite.animations.play("down" + this.direction);
+                } else if (this.sprite.body.velocity.y > this.JUMP_SPEED / 10 * 7) {
+                    this.sprite.animations.play("up" + this.direction);
+                } else {
+                    this.sprite.animations.play("jump" + this.direction);
+                }
             }
         }
     },
