@@ -78,6 +78,7 @@ Missile.prototype = {
             this.sprite.angle = 180;
             this.sprite.body.velocity.x = -MISSILE_SPEED;
         } else {
+            this.sprite.angle = 0;
             this.sprite.body.velocity.x = MISSILE_SPEED;
         }
         this.emitter.on = true;

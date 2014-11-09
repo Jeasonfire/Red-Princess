@@ -63,7 +63,7 @@ Player.prototype = {
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL);
         this.sprite.body.setSize(36, 88, 30, 8);
-        this.sprite.body.drag.x = 200;
+        this.sprite.body.drag.x = 2000;
 
         this.emitterJump = this.game.add.emitter();
         this.emitterJump.makeParticles("particleFire");
@@ -91,15 +91,15 @@ Player.prototype = {
         this.isMoving = true;
         if (input.pressedLeft() && !input.pressedRight()) {
             this.speed = -speed;
+            this.sprite.body.velocity.x = this.speed;
             this.direction = "left";
         } else if (input.pressedRight() && !input.pressedLeft()) {
             this.speed = speed;
+            this.sprite.body.velocity.x = this.speed;
             this.direction = "right";
         } else {
-            this.speed = 0;
             this.isMoving = false;
         }
-        this.sprite.body.velocity.x = this.speed;
 
         this.onFloor = this.sprite.body.onFloor();
         if (this.onFloor) {
@@ -119,15 +119,17 @@ Player.prototype = {
             this.firing = false;
             this.fired = false;
         }
-        if (input.pressedFire() && !this.firing) {
+        if (input.pressedFire() && !this.firing && this.onFloor) {
             this.firing = true;
             this.firingTime = this.game.time.now + 1000 / 6;
         }
         if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
             if (this.direction == "left") {
                 launchMissile(this.direction, this.sprite.x + 29, this.sprite.y + 43);
+                this.sprite.body.velocity.x += 600;
             } else {
                 launchMissile(this.direction, this.sprite.x + 67, this.sprite.y + 43);
+                this.sprite.body.velocity.x -= 600;
             }
             this.fired = true;
             this.firingTime = this.game.time.now + 1000 / 6;
