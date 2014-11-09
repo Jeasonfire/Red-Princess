@@ -17,7 +17,7 @@
  */
 
 var MAX_VEL = 950;
-var JUMP_RESET_TIME = 100;
+var JUMP_RESET_TIME = 75;
 
 var Player = function(game) {
     this.game = game;
@@ -25,17 +25,22 @@ var Player = function(game) {
 
     this.WALK_SPEED = 400;
     this.RUN_SPEED = 600;
-    this.JUMP_SPEED = -900;
+
     this.FIRING_RECOIL_Y = -200;
     this.FIRING_RECOIL_X = 450;
     this.FIRING_FPS = 6;
+
+    this.JUMP_SPEED = -600;
+    this.JUMP_AMOUNT = 3;
+    this.MAX_JUMP_AMOUNT = 3;
+    this.JUMP_PARTICLE_AMT = 25;
 
     this.speed = this.WALK_SPEED;
     this.direction = "right";
     this.isRunning = false;
     this.onFloor = false;
     this.isMoving = false;
-    this.canDoubleJump = true;
+    this.jumps = this.JUMP_AMOUNT;
     this.jumpTime = 0;
     this.firing = false;
     this.firingAnim = false;
@@ -72,7 +77,7 @@ Player.prototype = {
         this.sprite.body.setSize(36, 88, 30, 8);
         this.sprite.body.drag.x = 2000;
 
-        this.emitterJump = this.game.add.emitter();
+        this.emitterJump = this.game.add.emitter(0, 0, this.MAX_JUMP_AMOUNT * this.JUMP_PARTICLE_AMT);
         this.emitterJump.makeParticles("particleFire");
         this.emitterJump.setScale(0.5);
     },
@@ -110,9 +115,9 @@ Player.prototype = {
 
         this.onFloor = this.sprite.body.onFloor();
         if (this.onFloor) {
-            this.canDoubleJump = true;
+            this.jumps = this.JUMP_AMOUNT;
         }
-        if (input.justPressedUp() && (this.onFloor || this.canDoubleJump) && this.game.time.now > this.jumpTime) {
+        if (input.justPressedUp() && (this.onFloor || this.jumps > 0) && this.game.time.now > this.jumpTime) {
             if (Math.random() > 0.5) {
                 audio.sfxJump0.play();
             } else {
@@ -121,8 +126,8 @@ Player.prototype = {
             this.jumpTime = this.game.time.now + JUMP_RESET_TIME;
             this.sprite.body.velocity.y = this.JUMP_SPEED;
             if (!this.onFloor) {
-                this.emitterJump.start(true, 600, null, 25);
-                this.canDoubleJump = false;
+                this.emitterJump.start(true, 600, null, this.JUMP_PARTICLE_AMT);
+                this.jumps--;
             }
         }
 
