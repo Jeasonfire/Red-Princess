@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var MAX_VEL = 1000;
+var MAX_VEL = 950;
 var JUMP_RESET_TIME = 100;
 
 var Player = function(game) {
@@ -68,7 +68,7 @@ Player.prototype = {
         this.sprite.animations.add("firejumpleft", [17, 19], this.FIRING_FPS, false);
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-        this.sprite.body.maxVelocity.setTo(MAX_VEL);
+        this.sprite.body.maxVelocity.setTo(MAX_VEL, MAX_VEL);
         this.sprite.body.setSize(36, 88, 30, 8);
         this.sprite.body.drag.x = 2000;
 

@@ -26,19 +26,24 @@ MainMenu.prototype = {
         this.title = this.add.sprite(WIDTH / 2, 0, "mmTitle");
         this.title.anchor.setTo(0.5, 1);
         var titleTweenIn = this.add.tween(this.title);
-        titleTweenIn.to({y: this.title.height - 20}, 800, Phaser.Easing.Bounce.Out, true, 0, false);
+        //titleTweenIn.to({y: this.title.height - 20}, 800, Phaser.Easing.Bounce.Out, true, 0, false);
+        // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
+        titleTweenIn.to({y: this.title.height - 20}, 100, Phaser.Easing.Bounce.Out, true, 0, false);
 
         this.playButton = this.add.button(WIDTH, 300, "mmPlay", this.clickPlay, this);
         var playTweenIn = this.add.tween(this.playButton);
-        playTweenIn.to({x: 80}, 1000,
-            Phaser.Easing.Cubic.Out, true, 200, false);
+        //playTweenIn.to({x: 80}, 1000, Phaser.Easing.Cubic.Out, true, 200, false);
+        // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
+        playTweenIn.to({x: 80}, 100, Phaser.Easing.Cubic.Out, true, 0, false);
     },
 
     clickPlay: function() {
         var titleTweenIn = this.add.tween(this.title);
         titleTweenIn.to({y: HEIGHT + this.title.height}, 300, Phaser.Easing.Cubic.In, true, 0, false);
         var playTweenOut = this.add.tween(this.playButton);
-        playTweenOut.to({x: -this.playButton.width}, 300, Phaser.Easing.Cubic.In, true, 0, false);
+        //playTweenOut.to({x: -this.playButton.width}, 300, Phaser.Easing.Cubic.In, true, 0, false);
+        // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
+        playTweenOut.to({x: -this.playButton.width}, 100, Phaser.Easing.Cubic.In, true, 0, false);
         playTweenOut.onComplete.add(this.play);
     },
 

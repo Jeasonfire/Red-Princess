@@ -42,7 +42,9 @@ Load.prototype = {
 
     create: function() {
         var tween = this.add.tween(this.loadingBar);
-        tween.to({x: WIDTH + this.loadingBar.width / 2}, 750, Phaser.Easing.Cubic.In, true, 100, false, false);
+        //tween.to({x: WIDTH + this.loadingBar.width / 2}, 750, Phaser.Easing.Cubic.In, true, 100, false, false);
+        // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
+        tween.to({x: WIDTH + this.loadingBar.width / 2}, 100, Phaser.Easing.Cubic.In, true, 0, false, false);
         tween.onComplete.add(this.goToMenu);
     },
 
