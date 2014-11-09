@@ -22,6 +22,7 @@ var GRAVITY = 1500;
 var Game = function(game) {
     this.level = null;
     this.player = null;
+    this.music = null;
 };
 
 Game.prototype = {
@@ -37,6 +38,9 @@ Game.prototype = {
         this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
 
         initMissiles(this);
+
+        this.music = this.add.audio("musTest", 0.05, true);
+        this.music.play();
     },
 
     update: function() {

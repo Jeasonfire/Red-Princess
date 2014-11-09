@@ -33,11 +33,21 @@ Load.prototype = {
         // Load files
         this.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
         this.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
+
         this.load.image("tileset", "assets/gfx/map/tileset.png");
         this.load.tilemap("map", 'assets/levels/map.json', null, Phaser.Tilemap.TILED_JSON);
+
         this.load.spritesheet("player", "assets/gfx/player/player.png", 96, 96);
+
         this.load.image("particleFire", "assets/gfx/particles/fire.png");
         this.load.image("particleFireball", "assets/gfx/particles/fireball.png");
+
+        this.load.audio("sfxFire0", "assets/sfx/fire.wav");
+        this.load.audio("sfxFire1", "assets/sfx/fire1.wav");
+        this.load.audio("sfxExplosion0", "assets/sfx/explosion.wav");
+        this.load.audio("sfxExplosion1", "assets/sfx/explosion1.wav");
+
+        this.load.audio("musTest", "assets/music/test.wav");
     },
 
     create: function() {
