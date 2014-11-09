@@ -24,15 +24,17 @@ var Audio = function(game) {
     this.sfxFire1 = null;
     this.sfxJump0 = null;
     this.sfxJump1 = null;
+    this.sfxPExplode = null;
 };
 
 Audio.prototype = {
     create: function() {
-        this.sfxExplosion0 = this.game.add.audio("sfxExplosion0", 0.05);
-        this.sfxExplosion1 = this.game.add.audio("sfxExplosion1", 0.05);
+        this.sfxExplosion0 = this.game.add.audio("sfxExplosion0", 0.07);
+        this.sfxExplosion1 = this.game.add.audio("sfxExplosion1", 0.07);
         this.sfxFire0 = this.game.add.audio("sfxFire0", 0.05);
         this.sfxFire1 = this.game.add.audio("sfxFire1", 0.05);
         this.sfxJump0 = this.game.add.audio("sfxJump0", 0.05);
         this.sfxJump1 = this.game.add.audio("sfxJump1", 0.05);
+        this.sfxPExplode = this.game.add.audio("sfxPExplode", 0.08);
     }
 }

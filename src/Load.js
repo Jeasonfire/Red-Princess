@@ -63,6 +63,7 @@ Load.prototype = {
         this.load.audio("sfxExplosion1", "assets/sfx/explosion1.wav");
         this.load.audio("sfxJump0", "assets/sfx/jump.wav");
         this.load.audio("sfxJump1", "assets/sfx/jump1.wav");
+        this.load.audio("sfxPExplode", "assets/sfx/playerExplode.wav");
 
         this.load.audio("musTest", "assets/music/test.wav");
     },

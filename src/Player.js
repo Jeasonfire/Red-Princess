@@ -29,8 +29,13 @@ var Player = function(game) {
     this.FIRING_RECOIL_Y = -200;
     this.FIRING_RECOIL_X = 450;
     this.FIRING_FPS = 6;
-    this.OVERLOAD_AMT_FIREBALL = 10;
+
+    this.OVERLOAD_AMT_FIREBALL = 20;
     this.EXPLOSION_MISSILE_AMT = NUM_OF_MISSILES / 1.5;
+    this.EXPLOSION_FPS = 4;
+    this.explosionTime = 0;
+    this.exploded = false;
+    this.canExplode = true;
 
     this.JUMP_SPEED = -700;
     this.JUMP_AMOUNT = 3;
@@ -81,6 +86,7 @@ Player.prototype = {
         this.sprite.animations.add("firewalkleft", [11, 15], this.FIRING_FPS, false);
         this.sprite.animations.add("firejumpright", [16, 18], this.FIRING_FPS, false);
         this.sprite.animations.add("firejumpleft", [17, 19], this.FIRING_FPS, false);
+        this.sprite.animations.add("explode", [20, 21], this.EXPLOSION_FPS, false);
 
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL, MAX_VEL);
@@ -95,11 +101,16 @@ Player.prototype = {
     update: function(layer) {
         this.game.physics.arcade.collide(this.sprite, layer);
         this.updateInput();
+        this.updateHUD();
         this.updateAnimation();
         this.updateEmitters();
     },
 
     updateInput: function() {
+        if (this.game.time.now < this.explosionTime) {
+            return;
+        }
+
         var speed = this.WALK_SPEED;
         if (input.pressedRun() && this.onFloor) {
             speed = this.RUN_SPEED;
@@ -176,15 +187,31 @@ Player.prototype = {
 
         if (this.overload > this.OVERLOAD_CAP) {
             this.overload = 0;
-            this.explode();
+            this.explodeAnim();
         }
+    },
 
+    updateHUD: function() {
         this.game.hud.cropHealth(this.health / this.MAX_HEALTH);
         this.game.hud.cropJumps(this.jumps / this.JUMP_AMOUNT);
         this.game.hud.cropOverload(this.overload / this.OVERLOAD_CAP);
     },
 
     updateAnimation: function() {
+        if (this.game.time.now < this.explosionTime && !this.exploded) {
+            this.exploded = true;
+            this.sprite.animations.play("explode");
+        } else if (this.game.time.now < this.explosionTime) {
+            if (this.game.time.now > this.explosionTime - 1000 / this.EXPLOSION_FPS * 0.5 && this.canExplode) {
+                this.explode();
+                this.canExplode = false;
+            }
+            return;
+        } else if (this.exploded) {
+            this.exploded = false;
+            this.canExplode = true;
+            this.sprite.body.gravity.y = 0;
+        }
         if (this.onFloor) {
             if (this.isMoving) {
                 if (this.isRunning) {
@@ -226,12 +253,22 @@ Player.prototype = {
         this.emitterJump.y = this.sprite.y + this.sprite.height;
     },
 
+    explodeAnim: function() {
+        this.sprite.body.velocity.x = 0;
+        this.sprite.body.velocity.y = 0;
+        this.sprite.body.gravity.y = -GRAVITY;
+        this.explosionTime = this.game.time.now + 1000 / this.EXPLOSION_FPS * 2;
+        this.exploded = false;
+        audio.sfxPExplode.play();
+    },
+
     explode: function() {
-        this.game.hud.showHealth(2000);
         this.health -= 10;
+        this.game.hud.showHealth(2000);
         for (var i = 0; i < this.EXPLOSION_MISSILE_AMT; i++) {
             var angle = 360 / this.EXPLOSION_MISSILE_AMT * i;
             launchMissile(angle, this.sprite.x + 66, this.sprite.y + 43);
         }
+        audio.sfxExplosion0.play();
     }
 };
