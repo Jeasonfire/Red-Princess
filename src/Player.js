@@ -113,6 +113,11 @@ Player.prototype = {
             this.canDoubleJump = true;
         }
         if (input.justPressedUp() && (this.onFloor || this.canDoubleJump) && this.game.time.now > this.jumpTime) {
+            if (Math.random() > 0.5) {
+                audio.sfxJump0.play();
+            } else {
+                audio.sfxJump1.play();
+            }
             this.jumpTime = this.game.time.now + JUMP_RESET_TIME;
             this.sprite.body.velocity.y = this.JUMP_SPEED;
             if (!this.onFloor) {

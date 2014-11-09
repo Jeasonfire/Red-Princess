@@ -19,10 +19,6 @@
 var MISSILE_SPEED = 900;
 var NUM_OF_MISSILES = 10;
 var MISSILE_FLYING_TIME = 2000;
-var sfxExplosion0;
-var sfxExplosion1;
-var sfxFire0;
-var sfxFire1;
 var missiles;
 
 function initMissiles(game) {
@@ -32,10 +28,6 @@ function initMissiles(game) {
         missile.create();
         missiles[i] = missile;
     }
-    sfxExplosion0 = game.add.audio("sfxExplosion0", 0.05);
-    sfxExplosion1 = game.add.audio("sfxExplosion1", 0.05);
-    sfxFire0 = game.add.audio("sfxFire0", 0.05);
-    sfxFire1 = game.add.audio("sfxFire1", 0.05);
 }
 
 function launchMissile(direction, x, y) {
@@ -51,9 +43,9 @@ function launchMissile(direction, x, y) {
     }
     missile.init(direction, x, y);
     if (Math.random() > 0.5) {
-        sfxFire0.play();
+        audio.sfxFire0.play();
     } else {
-        sfxFire1.play();
+        audio.sfxFire1.play();
     }
 }
 
@@ -117,9 +109,9 @@ Missile.prototype = {
 
     explode: function(sprite, layer) {
         if (Math.random() > 0.5) {
-            sfxExplosion0.play();
+            audio.sfxExplosion0.play();
         } else {
-            sfxExplosion1.play();
+            audio.sfxExplosion1.play();
         }
         this.emitter.start(true, 500, 0, 20);
         this.sprite.kill();

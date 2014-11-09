@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var audio;
+var input;
+
 var Load = function(game) {
     this.loadingBar = null;
 };
@@ -28,7 +31,12 @@ Load.prototype = {
         this.load.setPreloadSprite(this.loadingBar);
 
         // Setup input
+        input = new Input(this);
         input.create();
+
+        // Setup audio
+        audio = new Audio(this);
+        audio.create();
 
         // Load files
         this.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
@@ -46,6 +54,8 @@ Load.prototype = {
         this.load.audio("sfxFire1", "assets/sfx/fire1.wav");
         this.load.audio("sfxExplosion0", "assets/sfx/explosion.wav");
         this.load.audio("sfxExplosion1", "assets/sfx/explosion1.wav");
+        this.load.audio("sfxJump0", "assets/sfx/jump.wav");
+        this.load.audio("sfxJump1", "assets/sfx/jump1.wav");
 
         this.load.audio("musTest", "assets/music/test.wav");
     },
