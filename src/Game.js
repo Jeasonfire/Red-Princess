@@ -22,6 +22,7 @@ var GRAVITY = 1500;
 var Game = function(game) {
     this.level = null;
     this.player = null;
+    this.hud = null;
     this.music = null;
 };
 
@@ -33,19 +34,24 @@ Game.prototype = {
 
         this.level = new Level(this);
         this.level.create();
+
         this.player = new Player(this);
         this.player.create();
         this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
 
+        this.hud = new HUD(this);
+        this.hud.create();
+
         initMissiles(this);
 
         this.music = this.add.audio("musTest", 0.05, true);
-        this.music.play();
+        //this.music.play();
     },
 
     update: function() {
         // Update player
         this.player.update(this.level.layerCollision);
+        this.hud.update();
         updateMissiles(this.level.layerCollision);
     }
 };

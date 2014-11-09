@@ -24,24 +24,34 @@ var Player = function(game) {
     this.sprite = null;
 
     this.WALK_SPEED = 400;
-    this.RUN_SPEED = 600;
+    this.RUN_SPEED = 800;
 
     this.FIRING_RECOIL_Y = -200;
     this.FIRING_RECOIL_X = 450;
     this.FIRING_FPS = 6;
+    this.OVERLOAD_AMT_FIREBALL = 10;
+    this.EXPLOSION_MISSILE_AMT = NUM_OF_MISSILES / 1.5;
 
-    this.JUMP_SPEED = -600;
+    this.JUMP_SPEED = -700;
     this.JUMP_AMOUNT = 3;
     this.MAX_JUMP_AMOUNT = 3;
     this.JUMP_PARTICLE_AMT = 25;
+
+    this.MAX_HEALTH = 100;
+    this.health = this.MAX_HEALTH;
+
+    this.OVERLOAD_CAP = 100;
+    this.overload = 0;
 
     this.speed = this.WALK_SPEED;
     this.direction = "right";
     this.isRunning = false;
     this.onFloor = false;
     this.isMoving = false;
+
     this.jumps = this.JUMP_AMOUNT;
     this.jumpTime = 0;
+
     this.firing = false;
     this.firingAnim = false;
     this.firingTime = 0;
@@ -114,8 +124,9 @@ Player.prototype = {
         }
 
         this.onFloor = this.sprite.body.onFloor();
-        if (this.onFloor) {
+        if (this.onFloor && this.jumps < this.JUMP_AMOUNT) {
             this.jumps = this.JUMP_AMOUNT;
+            this.game.hud.showJumps(2000);
         }
         if (input.justPressedUp() && (this.onFloor || this.jumps > 0) && this.game.time.now > this.jumpTime) {
             if (Math.random() > 0.5) {
@@ -128,6 +139,7 @@ Player.prototype = {
             if (!this.onFloor) {
                 this.emitterJump.start(true, 600, null, this.JUMP_PARTICLE_AMT);
                 this.jumps--;
+                this.game.hud.showJumps(2000);
             }
         }
 
@@ -142,23 +154,34 @@ Player.prototype = {
         }
         if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
             if (this.direction == "left") {
-                launchMissile(this.direction, this.sprite.x + 30, this.sprite.y + 43);
+                launchMissile(180, this.sprite.x + 30, this.sprite.y + 43);
                 this.sprite.body.velocity.x = this.FIRING_RECOIL_X;
                 if (!this.onFloor) {
                     this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
                     this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
                 }
             } else {
-                launchMissile(this.direction, this.sprite.x + 66, this.sprite.y + 43);
+                launchMissile(0, this.sprite.x + 66, this.sprite.y + 43);
                 this.sprite.body.velocity.x = -this.FIRING_RECOIL_X;
                 if (!this.onFloor) {
                     this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
                     this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
                 }
             }
+            this.overload += this.OVERLOAD_AMT_FIREBALL;
+            this.game.hud.showOverload(2000);
             this.fired = true;
             this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
         }
+
+        if (this.overload > this.OVERLOAD_CAP) {
+            this.overload = 0;
+            this.explode();
+        }
+
+        this.game.hud.cropHealth(this.health / this.MAX_HEALTH);
+        this.game.hud.cropJumps(this.jumps / this.JUMP_AMOUNT);
+        this.game.hud.cropOverload(this.overload / this.OVERLOAD_CAP);
     },
 
     updateAnimation: function() {
@@ -201,5 +224,14 @@ Player.prototype = {
     updateEmitters: function() {
         this.emitterJump.x = this.sprite.x + this.sprite.width / 2;
         this.emitterJump.y = this.sprite.y + this.sprite.height;
+    },
+
+    explode: function() {
+        this.game.hud.showHealth(2000);
+        this.health -= 10;
+        for (var i = 0; i < this.EXPLOSION_MISSILE_AMT; i++) {
+            var angle = 360 / this.EXPLOSION_MISSILE_AMT * i;
+            launchMissile(angle, this.sprite.x + 66, this.sprite.y + 43);
+        }
     }
 };

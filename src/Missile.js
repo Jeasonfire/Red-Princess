@@ -17,7 +17,7 @@
  */
 
 var MISSILE_SPEED = 900;
-var NUM_OF_MISSILES = 10;
+var NUM_OF_MISSILES = 15;
 var MISSILE_FLYING_TIME = 2000;
 var missiles;
 
@@ -82,13 +82,9 @@ Missile.prototype = {
     init: function(direction, x, y) {
         this.sprite.revive();
         this.sprite.reset(x, y);
-        if (direction == "left") {
-            this.sprite.angle = 180;
-            this.sprite.body.velocity.x = -MISSILE_SPEED;
-        } else {
-            this.sprite.angle = 0;
-            this.sprite.body.velocity.x = MISSILE_SPEED;
-        }
+        this.sprite.angle = direction;
+        this.sprite.body.velocity.x = Math.cos(direction * Math.PI / 180) * MISSILE_SPEED;
+        this.sprite.body.velocity.y = Math.sin(direction * Math.PI / 180) * MISSILE_SPEED;
         this.emitter.on = true;
         this.emitter.x = x;
         this.emitter.y = y;

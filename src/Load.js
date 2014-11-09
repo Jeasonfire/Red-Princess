@@ -50,6 +50,13 @@ Load.prototype = {
         this.load.image("particleFire", "assets/gfx/particles/fire.png");
         this.load.image("particleFireball", "assets/gfx/particles/fireball.png");
 
+        this.load.image("barBack", "assets/gfx/hud/barBack.png");
+        this.load.image("barBackMirror", "assets/gfx/hud/barBackMirror.png");
+        this.load.image("barBackOverload", "assets/gfx/hud/barBackOverload.png");
+        this.load.image("barHealth", "assets/gfx/hud/barHealth.png");
+        this.load.image("barJumps", "assets/gfx/hud/barJumps.png");
+        this.load.image("barOverload", "assets/gfx/hud/barOverload.png");
+
         this.load.audio("sfxFire0", "assets/sfx/fire.wav");
         this.load.audio("sfxFire1", "assets/sfx/fire1.wav");
         this.load.audio("sfxExplosion0", "assets/sfx/explosion.wav");
