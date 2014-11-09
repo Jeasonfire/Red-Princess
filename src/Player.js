@@ -96,15 +96,15 @@ Player.prototype = {
         }
 
         this.isMoving = true;
-        if (input.pressedLeft() && !input.pressedRight()) {
+        if (input.pressedLeft() && !input.pressedRight() && !this.fired) {
             this.speed = -speed;
             this.sprite.body.velocity.x = this.speed;
             this.direction = "left";
-        } else if (input.pressedRight() && !input.pressedLeft()) {
+        } else if (input.pressedRight() && !input.pressedLeft() && !this.fired) {
             this.speed = speed;
             this.sprite.body.velocity.x = this.speed;
             this.direction = "right";
-        } else {
+        } else if (!this.fired) {
             this.isMoving = false;
         }
 
@@ -133,14 +133,14 @@ Player.prototype = {
         if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
             if (this.direction == "left") {
                 launchMissile(this.direction, this.sprite.x + 29, this.sprite.y + 43);
-                this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
+                this.sprite.body.velocity.x = this.FIRING_RECOIL_X;
                 if (!this.onFloor) {
                     this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
                     this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
                 }
             } else {
                 launchMissile(this.direction, this.sprite.x + 67, this.sprite.y + 43);
-                this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
+                this.sprite.body.velocity.x = -this.FIRING_RECOIL_X;
                 if (!this.onFloor) {
                     this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
                     this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
