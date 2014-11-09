@@ -42,6 +42,6 @@ Game.prototype = {
     update: function() {
         // Update player
         this.player.update(this.level.layerCollision);
-        updateMissiles();
+        updateMissiles(this.level.layerCollision);
     }
 };

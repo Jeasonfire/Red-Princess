@@ -27,7 +27,7 @@ var Player = function(game) {
     this.RUN_SPEED = 600;
     this.JUMP_SPEED = -900;
     this.FIRING_RECOIL_Y = -200;
-    this.FIRING_RECOIL_X = 400;
+    this.FIRING_RECOIL_X = 450;
     this.FIRING_FPS = 6;
 
     this.speed = this.WALK_SPEED;
@@ -147,7 +147,7 @@ Player.prototype = {
                 }
             }
             this.fired = true;
-            this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS * 1.5);
+            this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
         }
     },
 

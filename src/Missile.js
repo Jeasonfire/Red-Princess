@@ -45,9 +45,9 @@ function launchMissile(direction, x, y) {
     missile.init(direction, x, y);
 }
 
-function updateMissiles() {
+function updateMissiles(layerCollision) {
     for (var i = 0; i < NUM_OF_MISSILES; i++) {
-        missiles[i].update();
+        missiles[i].update(layerCollision);
     }
 }
 
@@ -68,6 +68,10 @@ Missile.prototype = {
         this.emitter = game.add.emitter(0, 0);
         this.emitter.makeParticles("particleFire");
         this.emitter.setScale(1.5);
+        this.emitter.gravity = -GRAVITY;
+        this.emitter.width = 30;
+        this.emitter.height = 30;
+        this.emitter.setAlpha(1, 0.5);
         this.sprite.kill();
     },
 
@@ -84,17 +88,23 @@ Missile.prototype = {
         this.emitter.on = true;
         this.emitter.x = x;
         this.emitter.y = y;
-        this.emitter.start(false, 2000, 50);
+        this.emitter.start(false, 40, 40);
 
         this.killTime = this.game.time.now + MISSILE_FLYING_TIME;
     },
 
-    update: function() {
+    update: function(layerCollision) {
         this.emitter.x = this.sprite.x;
         this.emitter.y = this.sprite.y;
         if (this.game.time.now > this.killTime) {
             this.sprite.kill();
             this.emitter.on = false;
         }
+        this.game.physics.arcade.collide(this.sprite, layerCollision, this.explode, null, this);
+    },
+
+    explode: function(sprite, layer) {
+        this.sprite.kill();
+        this.emitter.start(true, 200, 0, 5);
     }
 };
