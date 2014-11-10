@@ -30,7 +30,9 @@ var Player = function(game) {
     this.FIRING_RECOIL_X = 450;
     this.FIRING_FPS = 6;
 
-    this.OVERLOAD_AMT_FIREBALL = 20;
+    this.OVERLOAD_AMT_FIREBALL = 6;
+    this.OVERLOAD_AMT_JUMP = 2;
+
     this.EXPLOSION_MISSILE_AMT = NUM_OF_MISSILES / 1.5;
     this.EXPLOSION_FPS = 4;
     this.explosionTime = 0;
@@ -151,6 +153,8 @@ Player.prototype = {
                 this.emitterJump.start(true, 600, null, this.JUMP_PARTICLE_AMT);
                 this.jumps--;
                 this.game.hud.showJumps(2000);
+                this.overload += this.OVERLOAD_AMT_JUMP;
+                this.game.hud.showOverload(2000);
             }
         }
 
@@ -185,9 +189,11 @@ Player.prototype = {
             this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
         }
 
-        if (this.overload > this.OVERLOAD_CAP) {
-            this.overload = 0;
+        if (this.overload >= this.OVERLOAD_CAP && input.pressedOverload() && !this.firingAnim) {
+            this.firingAnim = true;
             this.explodeAnim();
+        } else if (this.overload > this.OVERLOAD_CAP) {
+            this.overload = this.OVERLOAD_CAP;
         }
     },
 
@@ -211,6 +217,7 @@ Player.prototype = {
             this.exploded = false;
             this.canExplode = true;
             this.sprite.body.gravity.y = 0;
+            return;
         }
         if (this.onFloor) {
             if (this.isMoving) {
@@ -264,11 +271,14 @@ Player.prototype = {
 
     explode: function() {
         this.health -= 10;
+        this.overload -= this.OVERLOAD_CAP;
         this.game.hud.showHealth(2000);
+        this.game.hud.showOverload(2000);
         for (var i = 0; i < this.EXPLOSION_MISSILE_AMT; i++) {
             var angle = 360 / this.EXPLOSION_MISSILE_AMT * i;
             launchMissile(angle, this.sprite.x + 66, this.sprite.y + 43);
         }
+        this.firingAnim = false;
         audio.sfxExplosion0.play();
     }
 };

@@ -31,7 +31,8 @@ Input.prototype = {
             Phaser.Keyboard.UP,
             Phaser.Keyboard.SHIFT,
             Phaser.Keyboard.DOWN,
-            Phaser.Keyboard.F
+            Phaser.Keyboard.F,
+            Phaser.Keyboard.G
         ]);
     },
 
@@ -79,6 +80,12 @@ Input.prototype = {
     justPressedFire: function() {
         var isDown = false;
         isDown = this.game.input.keyboard.justPressed(Phaser.Keyboard.F);
+        return isDown;
+    },
+
+    pressedOverload: function() {
+        var isDown = false;
+        isDown = this.game.input.keyboard.isDown(Phaser.Keyboard.G);
         return isDown;
     }
 };
