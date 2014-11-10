@@ -38,6 +38,7 @@ Game.prototype = {
         this.player = new Player(this);
         this.player.create();
         this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+        //this.camera.height *= 0.5;
 
         this.hud = new HUD(this);
         this.hud.create();
@@ -50,8 +51,18 @@ Game.prototype = {
 
     update: function() {
         // Update player
+        beginStats();
         this.player.update(this.level.layerCollision);
         this.hud.update();
         updateMissiles(this.level.layerCollision);
+
+        if (this.player.health <= 0) {
+            this.gameover();
+        }
+        endStats();
+    },
+
+    gameover: function() {
+        this.game.state.start("MainMenu", true);
     }
 };

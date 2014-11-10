@@ -69,7 +69,7 @@ Missile.prototype = {
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.gravity.y = -GRAVITY;
         this.sprite.body.velocity.x = MISSILE_SPEED;
-        this.emitter = game.add.emitter(0, 0, 200);
+        this.emitter = game.add.emitter(0, 0, 30);
         this.emitter.makeParticles("particleFire");
         this.emitter.setScale(1.5);
         this.emitter.gravity = -GRAVITY;
