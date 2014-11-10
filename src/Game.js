@@ -51,7 +51,6 @@ Game.prototype = {
 
     update: function() {
         // Update player
-        beginStats();
         this.player.update(this.level.layerCollision);
         this.hud.update();
         updateMissiles(this.level.layerCollision);
@@ -59,7 +58,6 @@ Game.prototype = {
         if (this.player.health <= 0) {
             this.gameover();
         }
-        endStats();
     },
 
     gameover: function() {
