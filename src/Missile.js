@@ -97,9 +97,8 @@ Missile.prototype = {
     update: function(layerCollision) {
         this.emitter.x = this.sprite.x;
         this.emitter.y = this.sprite.y;
-        if (this.game.time.now > this.killTime) {
-            this.sprite.kill();
-            this.emitter.on = false;
+        if (this.game.time.now > this.killTime && this.emitter.on) {
+            this.explode();
         }
         this.game.physics.arcade.collide(this.sprite, layerCollision, this.explode, null, this);
     },
