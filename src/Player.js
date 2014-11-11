@@ -129,7 +129,7 @@ Player.prototype = {
     updateJumps: function() {
         if (this.onFloor && this.jumps < this.JUMP_AMOUNT) {
             this.jumps = this.JUMP_AMOUNT;
-            this.game.hud.showJumps(2000);
+            this.game.hud.showHUD(HUD_ELEMENT_LEFT_SECONDARY); // JUMPS
         }
     },
 
@@ -156,7 +156,7 @@ Player.prototype = {
                 }
             }
             this.overload += this.OVERLOAD_AMT_FIREBALL;
-            this.game.hud.showOverload(2000);
+            this.game.hud.showHUD(HUD_ELEMENT_MID_PRIMARY); // OVERLOAD
             this.fired = true;
             this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
         }
@@ -204,9 +204,9 @@ Player.prototype = {
             if (!this.onFloor) {
                 this.emitterJump.start(true, 600, null, this.JUMP_PARTICLE_AMT);
                 this.jumps--;
-                this.game.hud.showJumps(2000);
+                this.game.hud.showHUD(HUD_ELEMENT_LEFT_SECONDARY); // JUMPS
                 this.overload += this.OVERLOAD_AMT_JUMP;
-                this.game.hud.showOverload(2000);
+                this.game.hud.showHUD(HUD_ELEMENT_MID_PRIMARY); // OVERLOAD
             }
         }
 
@@ -222,9 +222,9 @@ Player.prototype = {
     },
 
     updateHUD: function() {
-        this.game.hud.cropHealth(this.health / this.maxHealth);
-        this.game.hud.cropJumps(this.jumps / this.JUMP_AMOUNT);
-        this.game.hud.cropOverload(this.overload / this.OVERLOAD_CAP);
+        this.game.hud.setHUDValue(HUD_ELEMENT_LEFT_PRIMARY, this.health / this.maxHealth);
+        this.game.hud.setHUDValue(HUD_ELEMENT_LEFT_SECONDARY, this.jumps / this.JUMP_AMOUNT);
+        this.game.hud.setHUDValue(HUD_ELEMENT_MID_PRIMARY, this.overload / this.OVERLOAD_CAP);
     },
 
     updateAnimation: function() {
@@ -296,8 +296,8 @@ Player.prototype = {
     explode: function() {
         this.health -= 10;
         this.overload -= this.OVERLOAD_CAP;
-        this.game.hud.showHealth(2000);
-        this.game.hud.showOverload(2000);
+        this.game.hud.showHUD(HUD_ELEMENT_LEFT_PRIMARY); // HP
+        this.game.hud.showHUD(HUD_ELEMENT_MID_PRIMARY); // OVERLOAD
         for (var i = 0; i < this.EXPLOSION_MISSILE_AMT; i++) {
             var angle = 360 / this.EXPLOSION_MISSILE_AMT * i;
             launchMissile(angle, this.sprite.x + 66, this.sprite.y + 43);
@@ -324,7 +324,7 @@ Player.prototype = {
             }
             this.sprite.body.velocity.y = -enemy.knockback / 2;
             this.health -= enemy.damage;
-            this.game.hud.showHealth(2000);
+            this.game.hud.showHUD(HUD_ELEMENT_LEFT_PRIMARY); // HP
             this.paralyzeTime = this.game.time.now + 500;
         }
     }

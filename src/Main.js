@@ -16,8 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var WIDTH = 960;
-var HEIGHT = 540;
 var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, "gameDiv");
 
 var input = new Input(game);

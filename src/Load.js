@@ -39,25 +39,33 @@ Load.prototype = {
         audio.create();
 
         // Load files
+        // Main menu
         this.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
         this.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
 
+        // Maps/tilesets
         this.load.image("tileset", "assets/gfx/map/tileset.png");
         this.load.tilemap("map", 'assets/levels/map.json', null, Phaser.Tilemap.TILED_JSON);
 
+        // Game objects (ie. player, enemies)
         this.load.spritesheet("player", "assets/gfx/player/player.png", 96, 96);
         this.load.spritesheet("guard", "assets/gfx/enemies/guard.png", 96, 96);
 
+        // Particles & missiles
         this.load.image("particleFire", "assets/gfx/particles/fire.png");
         this.load.image("particleFireball", "assets/gfx/particles/fireball.png");
 
-        this.load.image("barBack", "assets/gfx/hud/barBack.png");
-        this.load.image("barBackMirror", "assets/gfx/hud/barBackMirror.png");
-        this.load.image("barBackOverload", "assets/gfx/hud/barBackOverload.png");
-        this.load.image("barHealth", "assets/gfx/hud/barHealth.png");
-        this.load.image("barJumps", "assets/gfx/hud/barJumps.png");
-        this.load.image("barOverload", "assets/gfx/hud/barOverload.png");
+        // HUD
+        this.load.image("hudElementLeftBack", "assets/gfx/hud/barLeft.png");
+        this.load.image("hudElementRightBack", "assets/gfx/hud/barRight.png");
+        this.load.image("hudElementMidBack", "assets/gfx/hud/barMid.png");
+        this.load.image("hudElementLeftPrimary", "assets/gfx/hud/barLeftPrimary.png");
+        this.load.image("hudElementLeftSecondary", "assets/gfx/hud/barLeftSecondary.png");
+        this.load.image("hudElementRightPrimary", "assets/gfx/hud/barRightPrimary.png");
+        this.load.image("hudElementRightSecondary", "assets/gfx/hud/barRightSecondary.png");
+        this.load.image("hudElementMidPrimary", "assets/gfx/hud/barMidPrimary.png");
 
+        // Sound effects
         this.load.audio("sfxFire0", "assets/sfx/fire.wav");
         this.load.audio("sfxFire1", "assets/sfx/fire1.wav");
         this.load.audio("sfxExplosion0", "assets/sfx/explosion.wav");
@@ -66,6 +74,7 @@ Load.prototype = {
         this.load.audio("sfxJump1", "assets/sfx/jump1.wav");
         this.load.audio("sfxPExplode", "assets/sfx/playerExplode.wav");
 
+        // Music
         this.load.audio("musTest", "assets/music/test.wav");
     },
 

@@ -89,5 +89,6 @@ Level.prototype = {
 
     cameraFollow: function(obj) {
         this.game.camera.follow(obj, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+        this.game.camera.deadzone.height *= 0.75;
     }
 };
