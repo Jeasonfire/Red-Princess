@@ -16,29 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var Enemy = function(game) {
+var Enemy = function(game, name) {
     this.game = game;
+    this.name = name;
     this.sprite = null;
-    this.name = "";
 };
 
 Enemy.prototype = {
-    create: function(x, y, name) {
-        this.name = name;
-        this.sprite = this.game.add.sprite(x, y, name);
-        if (name == "guard") {
-            // Set animations for guard
-            this.sprite.animations.add("still", [0], 1, true);
-            this.sprite.animations.add("left", [1, 2], 6, true);
-            this.sprite.animations.add("right", [2, 1], 6, true);
-            this.sprite.animations.add("block", [3], 1, true);
-            // Set variables for guard
-            this.block = false;
-            this.moveTime = this.game.time.now + 3000;
-            this.speed = 250;
-        }
+    create: function(x, y) {
+        this.sprite = this.game.add.sprite(x, y, this.name);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.maxVelocity.setTo(MAX_VEL, MAX_VEL);
+        this.init();
+    },
+
+    init: function() {
+        // Override
     },
 
     update: function(layer) {
@@ -48,30 +41,10 @@ Enemy.prototype = {
     },
 
     updateAI: function() {
-        if (this.name == "guard") {
-            // Update guard AI
-            if (this.game.time.now > this.moveTime) {
-                this.moveTime = this.game.time.now + 3000;
-                this.sprite.body.velocity.x = this.speed;
-                this.sprite.body.velocity.x *= Math.max(0.5, Math.random()) * 2 - 1.5;
-            }
-        }
+        // Override
     },
 
     updateAnim: function() {
-        if (this.name == "guard") {
-            // Animate guard
-            if (this.block) {
-                this.sprite.animations.play("block");
-            } else {
-                if (this.sprite.body.velocity.x < 0) {
-                    this.sprite.animations.play("left");
-                } else if (this.sprite.body.velocity.x > 0) {
-                    this.sprite.animations.play("right");
-                } else {
-                    this.sprite.animations.play("still");
-                }
-            }
-        }
+        // Override
     }
 };

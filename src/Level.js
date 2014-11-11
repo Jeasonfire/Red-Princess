@@ -82,7 +82,7 @@ Level.prototype = {
     },
 
     createEnemy: function(x, y, name) {
-        var enemy = new Enemy(this.game);
+        var enemy = new Guard(this.game);
         enemy.create(x, y, name);
         this.objs.push(enemy);
     },
