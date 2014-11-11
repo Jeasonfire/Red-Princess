@@ -46,6 +46,7 @@ Load.prototype = {
         this.load.tilemap("map", 'assets/levels/map.json', null, Phaser.Tilemap.TILED_JSON);
 
         this.load.spritesheet("player", "assets/gfx/player/player.png", 96, 96);
+        this.load.spritesheet("guard", "assets/gfx/enemies/guard.png", 96, 96);
 
         this.load.image("particleFire", "assets/gfx/particles/fire.png");
         this.load.image("particleFireball", "assets/gfx/particles/fireball.png");

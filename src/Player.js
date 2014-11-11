@@ -68,8 +68,8 @@ var Player = function(game) {
 };
 
 Player.prototype = {
-    create: function() {
-        this.sprite = this.game.add.sprite(0, 0, "player");
+    create: function(x, y) {
+        this.sprite = this.game.add.sprite(x, y, "player");
         this.sprite.animations.add("standright", [0], 1, true);
         this.sprite.animations.add("standleft", [1], 1, true);
         this.sprite.animations.add("walkright", [2, 4], 6, true);

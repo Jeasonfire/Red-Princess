@@ -21,7 +21,6 @@ var GRAVITY = 1500;
 
 var Game = function(game) {
     this.level = null;
-    this.player = null;
     this.hud = null;
     this.music = null;
 };
@@ -35,11 +34,6 @@ Game.prototype = {
         this.level = new Level(this);
         this.level.create();
 
-        this.player = new Player(this);
-        this.player.create();
-        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
-        //this.camera.height *= 0.5;
-
         this.hud = new HUD(this);
         this.hud.create();
 
@@ -51,16 +45,8 @@ Game.prototype = {
 
     update: function() {
         // Update player
-        this.player.update(this.level.layerCollision);
+        this.level.update();
         this.hud.update();
         updateMissiles(this.level.layerCollision);
-
-        if (this.player.health <= 0) {
-            this.gameover();
-        }
-    },
-
-    gameover: function() {
-        this.game.state.start("MainMenu", true);
     }
 };
