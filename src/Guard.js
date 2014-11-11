@@ -84,6 +84,8 @@ Guard.prototype = Object.create(Enemy.prototype, {
                     } else {
                         this.block = false;
                     }
+                    this.game.hud.setHUDValue(HUD_ELEMENT_RIGHT_PRIMARY, this.health / this.maxHealth);
+                    this.game.hud.showHUD(HUD_ELEMENT_RIGHT_PRIMARY);
                 }
             }
         }
