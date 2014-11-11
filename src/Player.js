@@ -26,7 +26,7 @@ var Player = function(game) {
     this.WALK_SPEED = 400;
     this.RUN_SPEED = 800;
 
-    this.FIRING_RECOIL_Y = -200;
+    this.FIRING_RECOIL_Y = -100;
     this.FIRING_RECOIL_X = 450;
     this.FIRING_FPS = 6;
 

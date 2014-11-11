@@ -17,7 +17,7 @@
  */
 
 var MISSILE_SPEED = 900;
-var NUM_OF_MISSILES = 15;
+var NUM_OF_MISSILES = 30;
 var MISSILE_FLYING_TIME = 2000;
 var missiles;
 
@@ -69,7 +69,7 @@ Missile.prototype = {
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.gravity.y = -GRAVITY;
         this.sprite.body.velocity.x = MISSILE_SPEED;
-        this.emitter = game.add.emitter(0, 0, 30);
+        this.emitter = game.add.emitter(0, 0, 20);
         this.emitter.makeParticles("particleFire");
         this.emitter.setScale(1.5);
         this.emitter.gravity = -GRAVITY;
