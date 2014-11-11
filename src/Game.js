@@ -48,5 +48,9 @@ Game.prototype = {
         this.level.update();
         this.hud.update();
         updateMissiles(this.level.layerCollision);
+    },
+
+    gameover: function() {
+        this.game.state.start("MainMenu");
     }
 };

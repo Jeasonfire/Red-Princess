@@ -35,7 +35,6 @@ var Player = function(game) {
 
     this.EXPLOSION_MISSILE_AMT = NUM_OF_MISSILES / 1.5;
     this.EXPLOSION_FPS = 4;
-    this.explosionTime = 0;
     this.exploded = false;
     this.canExplode = true;
 
@@ -44,8 +43,8 @@ var Player = function(game) {
     this.MAX_JUMP_AMOUNT = 3;
     this.JUMP_PARTICLE_AMT = 25;
 
-    this.MAX_HEALTH = 100;
-    this.health = this.MAX_HEALTH;
+    this.maxHealth = 100;
+    this.health = this.maxHealth;
 
     this.OVERLOAD_CAP = 100;
     this.overload = 0;
@@ -65,11 +64,15 @@ var Player = function(game) {
     this.fired = false;
 
     this.emitterJump = null;
+
+    this.explosionTime = 0;
+    this.paralyzeTime = 0;
 };
 
 Player.prototype = {
     create: function(x, y) {
-        this.sprite = this.game.add.sprite(x, y, "player");
+        this.sprite = this.game.add.sprite(0, 0, "player");
+        this.sprite.position.setTo(x, y);
         this.sprite.animations.add("standright", [0], 1, true);
         this.sprite.animations.add("standleft", [1], 1, true);
         this.sprite.animations.add("walkright", [2, 4], 6, true);
@@ -102,17 +105,70 @@ Player.prototype = {
 
     update: function(layer) {
         this.game.physics.arcade.collide(this.sprite, layer);
-        this.updateInput();
+
+        if (this.game.time.now > this.paralyzeTime &&
+            this.game.time.now > this.explosionTime) {
+            this.updateInput();
+        }
+
+        this.updateJumps();
+        this.updateFiring();
+        this.updateOverload();
+
         this.updateHUD();
         this.updateAnimation();
         this.updateEmitters();
+
+        this.updateEnemyCollisions();
+
+        if (this.health <= 0) {
+            this.game.gameover();
+        }
+    },
+
+    updateJumps: function() {
+        if (this.onFloor && this.jumps < this.JUMP_AMOUNT) {
+            this.jumps = this.JUMP_AMOUNT;
+            this.game.hud.showJumps(2000);
+        }
+    },
+
+    updateFiring: function() {
+        if (this.firingAnim && this.fired && this.game.time.now > this.firingTime) {
+            this.firingAnim = false;
+            this.firing = false;
+            this.fired = false;
+        }
+        if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
+            if (this.direction == "left") {
+                launchMissile(180, this.sprite.x + 30, this.sprite.y + 43);
+                this.sprite.body.velocity.x = this.FIRING_RECOIL_X;
+                if (!this.onFloor) {
+                    this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
+                    this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
+                }
+            } else {
+                launchMissile(0, this.sprite.x + 66, this.sprite.y + 43);
+                this.sprite.body.velocity.x = -this.FIRING_RECOIL_X;
+                if (!this.onFloor) {
+                    this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
+                    this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
+                }
+            }
+            this.overload += this.OVERLOAD_AMT_FIREBALL;
+            this.game.hud.showOverload(2000);
+            this.fired = true;
+            this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
+        }
+    },
+
+    updateOverload: function() {
+        if (this.overload > this.OVERLOAD_CAP) {
+            this.overload = this.OVERLOAD_CAP;
+        }
     },
 
     updateInput: function() {
-        if (this.game.time.now < this.explosionTime) {
-            return;
-        }
-
         var speed = this.WALK_SPEED;
         if (input.pressedRun() && this.onFloor) {
             speed = this.RUN_SPEED;
@@ -137,10 +193,6 @@ Player.prototype = {
         }
 
         this.onFloor = this.sprite.body.onFloor();
-        if (this.onFloor && this.jumps < this.JUMP_AMOUNT) {
-            this.jumps = this.JUMP_AMOUNT;
-            this.game.hud.showJumps(2000);
-        }
         if (input.justPressedUp() && (this.onFloor || this.jumps > 0) && this.game.time.now > this.jumpTime) {
             if (Math.random() > 0.5) {
                 audio.sfxJump0.play();
@@ -158,47 +210,19 @@ Player.prototype = {
             }
         }
 
-        if (this.firingAnim && this.fired && this.game.time.now > this.firingTime) {
-            this.firingAnim = false;
-            this.firing = false;
-            this.fired = false;
-        }
         if (input.pressedFire() && !this.firing) {
             this.firing = true;
-            this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
-        }
-        if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
-            if (this.direction == "left") {
-                launchMissile(180, this.sprite.x + 30, this.sprite.y + 43);
-                this.sprite.body.velocity.x = this.FIRING_RECOIL_X;
-                if (!this.onFloor) {
-                    this.sprite.body.velocity.x += this.FIRING_RECOIL_X;
-                    this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
-                }
-            } else {
-                launchMissile(0, this.sprite.x + 66, this.sprite.y + 43);
-                this.sprite.body.velocity.x = -this.FIRING_RECOIL_X;
-                if (!this.onFloor) {
-                    this.sprite.body.velocity.x -= this.FIRING_RECOIL_X;
-                    this.sprite.body.velocity.y = this.FIRING_RECOIL_Y;
-                }
-            }
-            this.overload += this.OVERLOAD_AMT_FIREBALL;
-            this.game.hud.showOverload(2000);
-            this.fired = true;
             this.firingTime = this.game.time.now + 1000 / (this.FIRING_FPS);
         }
 
         if (this.overload >= this.OVERLOAD_CAP && input.pressedOverload() && !this.firingAnim) {
             this.firingAnim = true;
             this.explodeAnim();
-        } else if (this.overload > this.OVERLOAD_CAP) {
-            this.overload = this.OVERLOAD_CAP;
         }
     },
 
     updateHUD: function() {
-        this.game.hud.cropHealth(this.health / this.MAX_HEALTH);
+        this.game.hud.cropHealth(this.health / this.maxHealth);
         this.game.hud.cropJumps(this.jumps / this.JUMP_AMOUNT);
         this.game.hud.cropOverload(this.overload / this.OVERLOAD_CAP);
     },
@@ -280,5 +304,28 @@ Player.prototype = {
         }
         this.firingAnim = false;
         audio.sfxExplosion0.play();
+    },
+
+    updateEnemyCollisions: function() {
+        for (var i = 0; i < enemies.length; i++) {
+            this.collideEnemy(enemies[i]);
+        }
+    },
+
+    collideEnemy: function(enemy) {
+        if (enemy.killed) {
+            return;
+        }
+        if (this.game.physics.arcade.collide(this.sprite, enemy.sprite)) {
+            if (this.sprite.x > enemy.sprite.x) {
+                this.sprite.body.velocity.x = enemy.knockback;
+            } else {
+                this.sprite.body.velocity.x = -enemy.knockback;
+            }
+            this.sprite.body.velocity.y = -enemy.knockback / 2;
+            this.health -= enemy.damage;
+            this.game.hud.showHealth(2000);
+            this.paralyzeTime = this.game.time.now + 500;
+        }
     }
 };

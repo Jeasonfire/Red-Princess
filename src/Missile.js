@@ -60,6 +60,7 @@ var Missile = function(game) {
     this.sprite = null;
     this.emitter = null;
     this.killTime = 0;
+    this.damage = 20;
 };
 
 Missile.prototype = {

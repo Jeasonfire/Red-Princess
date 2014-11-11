@@ -28,6 +28,7 @@ Guard.prototype = Object.create(Enemy.prototype, {
             this.sprite.animations.add("left", [1, 2], 6, true);
             this.sprite.animations.add("right", [2, 1], 6, true);
             this.sprite.animations.add("block", [3], 1, true);
+            this.sprite.animations.add("dead", [4, 5], 3, false);
             // Set variables for guard
             this.block = false;
             this.moveTime = this.game.time.now + 3000;
@@ -40,8 +41,13 @@ Guard.prototype = Object.create(Enemy.prototype, {
             // Update guard AI
             if (this.game.time.now > this.moveTime) {
                 this.moveTime = this.game.time.now + 3000;
-                this.sprite.body.velocity.x = this.speed;
-                this.sprite.body.velocity.x *= Math.max(0.5, Math.random()) * 2 - 1.5;
+                if (Math.random() > 0.4) {
+                    this.block = true;
+                } else {
+                    this.block = false;
+                    this.sprite.body.velocity.x = this.speed;
+                    this.sprite.body.velocity.x *= Math.max(0.5, Math.random()) * 2 - 1.5;
+                }
             }
         }
     },
@@ -49,7 +55,12 @@ Guard.prototype = Object.create(Enemy.prototype, {
     updateAnim: {
         value: function() {
             // Animate guard
-            if (this.block) {
+            if (this.killed && !this.sprite.animations.getAnimation("dead").isPlaying && !this.sprite.animations.getAnimation("dead").isFinished) {
+                this.sprite.animations.play("dead");
+                this.sprite.body.setSize(96, 36, 0, 60);
+            } else if (this.killed) {
+                return;
+            } else if (this.block) {
                 this.sprite.animations.play("block");
             } else {
                 if (this.sprite.body.velocity.x < 0) {
@@ -58,6 +69,21 @@ Guard.prototype = Object.create(Enemy.prototype, {
                     this.sprite.animations.play("right");
                 } else {
                     this.sprite.animations.play("still");
+                }
+            }
+        }
+    },
+
+    updateMissileCollision: {
+        value: function() {
+            for (var i = 0; i < missiles.length; i++) {
+                if (this.game.physics.arcade.collide(this.sprite, missiles[i].sprite)) {
+                    missiles[i].explode();
+                    if (!this.block) {
+                        this.health -= missiles[i].damage;
+                    } else {
+                        this.block = false;
+                    }
                 }
             }
         }
