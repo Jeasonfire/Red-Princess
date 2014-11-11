@@ -23,27 +23,31 @@ var MainMenu = function(game) {
 
 MainMenu.prototype = {
     create: function() {
-        this.title = this.add.sprite(WIDTH / 2, 0, "mmTitle");
+        this.add.sprite(0, 0, "mmBackground");
+        this.title = this.add.sprite(WIDTH / 2, 160, "mmTitle");
         this.title.anchor.setTo(0.5, 1);
+        this.title.alpha = 0;
         var titleTweenIn = this.add.tween(this.title);
         //titleTweenIn.to({y: this.title.height - 20}, 800, Phaser.Easing.Bounce.Out, true, 0, false);
         // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
-        titleTweenIn.to({y: this.title.height - 20}, 100, Phaser.Easing.Bounce.Out, true, 0, false);
+        titleTweenIn.to({alpha: 1}, 150, Phaser.Easing.Cubic.In, true);
 
-        this.playButton = this.add.button(WIDTH, 300, "mmPlay", this.clickPlay, this);
+        this.playButton = this.add.button(WIDTH / 2, 250, "mmPlay", this.clickPlay, this);
+        this.playButton.anchor.setTo(0.5, 0);
+        this.playButton.alpha = 0;
         var playTweenIn = this.add.tween(this.playButton);
         //playTweenIn.to({x: 80}, 1000, Phaser.Easing.Cubic.Out, true, 200, false);
         // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
-        playTweenIn.to({x: 80}, 100, Phaser.Easing.Cubic.Out, true, 0, false);
+        playTweenIn.to({alpha: 1}, 150, Phaser.Easing.Cubic.In, true);
     },
 
     clickPlay: function() {
         var titleTweenIn = this.add.tween(this.title);
-        titleTweenIn.to({y: HEIGHT + this.title.height}, 300, Phaser.Easing.Cubic.In, true, 0, false);
+        titleTweenIn.to({alpha: 0}, 100, Phaser.Easing.Cubic.In, true);
         var playTweenOut = this.add.tween(this.playButton);
         //playTweenOut.to({x: -this.playButton.width}, 300, Phaser.Easing.Cubic.In, true, 0, false);
         // Change the next line to the commented line above when deploying to public, the line below has smaller delays for faster testing purposes, but it looks worse.
-        playTweenOut.to({x: -this.playButton.width}, 100, Phaser.Easing.Cubic.In, true, 0, false);
+        playTweenOut.to({alpha: 0}, 100, Phaser.Easing.Cubic.In, true);
         playTweenOut.onComplete.add(this.play);
     },
 

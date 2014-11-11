@@ -40,6 +40,7 @@ Load.prototype = {
 
         // Load files
         // Main menu
+        this.load.image("mmBackground", "assets/gfx/mainmenu/background.png");
         this.load.image("mmTitle", "assets/gfx/mainmenu/title.png");
         this.load.image("mmPlay", "assets/gfx/mainmenu/play.png");
 
