@@ -112,8 +112,8 @@ Player.prototype = {
         }
 
         this.updateJumps();
-        this.updateFiring();
         this.updateOverload();
+        this.updateFiring();
 
         this.updateHUD();
         this.updateAnimation();
@@ -139,7 +139,8 @@ Player.prototype = {
             this.firing = false;
             this.fired = false;
         }
-        if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired) {
+        if (this.firingAnim && this.game.time.now > this.firingTime && !this.fired &&
+            this.game.time.now > this.explosionTime) {
             if (this.direction == "left") {
                 launchMissile(180, this.sprite.x + 30, this.sprite.y + 43);
                 this.sprite.body.velocity.x = this.FIRING_RECOIL_X;
