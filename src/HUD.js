@@ -46,19 +46,19 @@ var HUD_ELEMENT_SPRITES = [
 
 var HUD_ELEMENT_STATES = [
     // Left primary
-    {tweening: false, hideTime: 0, hidden: false},
+    {tweening: false, hideTime: 0, hidden: false, toggle: false},
 
     // Left secondary
-    {tweening: false, hideTime: 0, hidden: false},
+    {tweening: false, hideTime: 0, hidden: false, toggle: false},
 
     // Right primary
-    {tweening: false, hideTime: 0, hidden: false},
+    {tweening: false, hideTime: 0, hidden: false, toggle: false},
 
     // Right secondary
-    {tweening: false, hideTime: 0, hidden: false},
+    {tweening: false, hideTime: 0, hidden: false, toggle: false},
 
     // Mid primary
-    {tweening: false, hideTime: 0, hidden: false}
+    {tweening: false, hideTime: 0, hidden: false, toggle: false}
 ];
 
 var HUD = function(game) {
@@ -93,10 +93,17 @@ HUD.prototype = {
 
     update: function() {
         for (var i = 0; i < HUD_AMT_OF_ELEMENTS; i++) {
+            if (HUD_ELEMENT_STATES[i].toggle) {
+                continue;
+            }
             if (this.game.time.now > HUD_ELEMENT_STATES[i].hideTime && !HUD_ELEMENT_STATES[i].hidden) {
                 this.hideHUD(i);
             }
         }
+    },
+
+    toggleHUD: function(element, toggle) {
+        HUD_ELEMENT_STATES[i].toggle = toggle;
     },
 
     setHUDValue: function(element, value) {
@@ -109,12 +116,16 @@ HUD.prototype = {
         this.hudElements[element].width = this.hudBacks[element].width * value;
     },
 
-    showHUD: function(element) {
+    showHUD: function(element, time) {
         if (HUD_ELEMENT_STATES[element].tweening) {
             return;
         }
 
-        HUD_ELEMENT_STATES[element].hideTime = this.game.time.now + HUD_TWEEN_TIME + HUD_OPEN_TIME;
+        var openTime = HUD_OPEN_TIME;
+        if (time !== undefined) {
+            openTime = time;
+        }
+        HUD_ELEMENT_STATES[element].hideTime = this.game.time.now + HUD_TWEEN_TIME + openTime;
         if (!HUD_ELEMENT_STATES[element].hidden) {
             return;
         }
