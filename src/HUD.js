@@ -100,6 +100,12 @@ HUD.prototype = {
     },
 
     setHUDValue: function(element, value) {
+        if (value < 0) {
+            value = 0;
+        }
+        if (value > 1) {
+            value = 1;
+        }
         this.hudElements[element].width = this.hudBacks[element].width * value;
     },
 

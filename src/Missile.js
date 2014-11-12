@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var MISSILE_SPEED = 900;
+var MISSILE_SPEED = 700;
 var NUM_OF_MISSILES = 30;
 var MISSILE_FLYING_TIME = 2000;
 var missiles;

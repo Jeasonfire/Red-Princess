@@ -80,7 +80,7 @@ Guard.prototype = Object.create(Enemy.prototype, {
                 if (this.game.physics.arcade.collide(this.sprite, missiles[i].sprite)) {
                     missiles[i].explode();
                     if (!this.block) {
-                        this.health -= missiles[i].damage;
+                        this.takeDmg(missiles[i].damage);
                     } else {
                         this.block = false;
                     }

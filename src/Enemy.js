@@ -56,6 +56,12 @@ Enemy.prototype = {
         this.updateAnim();
     },
 
+    takeDmg: function(amt) {
+        if (!this.killed) {
+            this.health -= amt;
+        }
+    },
+
     updateAI: function() {
         // Override
     },

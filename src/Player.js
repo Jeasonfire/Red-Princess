@@ -33,7 +33,7 @@ var Player = function(game) {
     this.OVERLOAD_AMT_FIREBALL = 6;
     this.OVERLOAD_AMT_JUMP = 2;
 
-    this.EXPLOSION_MISSILE_AMT = NUM_OF_MISSILES / 1.5;
+    this.EXPLOSION_MISSILE_AMT = 10;
     this.EXPLOSION_FPS = 4;
     this.exploded = false;
     this.canExplode = true;
