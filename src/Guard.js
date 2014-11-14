@@ -23,16 +23,18 @@ var Guard = function(game) {
 Guard.prototype = Object.create(Enemy.prototype, {
     init: {
         value: function() {
-            // Set animations for guard
+            // Set animations for the guard
             this.sprite.animations.add("still", [0], 1, true);
             this.sprite.animations.add("left", [1, 2], 6, true);
             this.sprite.animations.add("right", [2, 1], 6, true);
             this.sprite.animations.add("block", [3], 1, true);
             this.sprite.animations.add("dead", [4, 5], 3, false);
-            // Set variables for guard
+            // Set variables for the guard
             this.block = false;
             this.moveTime = this.game.time.now + 3000;
             this.speed = 250;
+            // Set hitbox for the guard
+            this.sprite.body.setSize(66, 81, 15, 15);
         }
     },
 

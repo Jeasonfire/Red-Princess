@@ -17,7 +17,7 @@
  */
 
 var MISSILE_SPEED = 700;
-var NUM_OF_MISSILES = 30;
+var NUM_OF_MISSILES = 20;
 var MISSILE_FLYING_TIME = 2000;
 var missiles;
 
