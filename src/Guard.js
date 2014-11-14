@@ -32,7 +32,10 @@ Guard.prototype = Object.create(Enemy.prototype, {
             // Set variables for the guard
             this.block = false;
             this.moveTime = this.game.time.now + 3000;
-            this.speed = 250;
+            this.SPEED = 250;
+            this.moveSpeed = 0;
+            this.onFloor = true;
+            this.paralyzeTime = 0;
             // Set hitbox for the guard
             this.sprite.body.setSize(66, 81, 15, 15);
         }
@@ -41,16 +44,31 @@ Guard.prototype = Object.create(Enemy.prototype, {
     updateAI: {
         value: function() {
             // Update guard AI
+            if (this.game.time.now < this.paralyzeTime) {
+                return;
+            }
+
             if (this.game.time.now > this.moveTime) {
-                this.moveTime = this.game.time.now + 3000;
-                if (Math.random() > 0.4) {
+                this.moveTime = this.game.time.now + 1000;
+                if (Math.random() >= 0.5) {
                     this.block = true;
+                    this.moveSpeed = 0;
                 } else {
                     this.block = false;
-                    this.sprite.body.velocity.x = this.speed;
-                    this.sprite.body.velocity.x *= Math.max(0.5, Math.random()) * 2 - 1.5;
+                    if (Math.abs(this.moveSpeed) != this.SPEED) {
+                        this.moveSpeed = this.SPEED;
+                    }
+                    var rand = Math.floor(Math.random() + 0.5) * 2 - 1;
+                    this.moveSpeed *= rand;
                 }
             }
+            // Check if the guard used to be on floor but is now falling
+            if (this.sprite.body.velocity.y > 0 && this.onFloor) {
+                this.sprite.body.velocity.y = -400;
+                this.moveSpeed *= -1;
+            }
+            this.onFloor = this.sprite.body.onFloor();
+            this.sprite.body.velocity.x = this.moveSpeed;
         }
     },
 
@@ -60,6 +78,10 @@ Guard.prototype = Object.create(Enemy.prototype, {
             if (this.killed && !this.sprite.animations.getAnimation("dead").isPlaying && !this.sprite.animations.getAnimation("dead").isFinished) {
                 this.sprite.animations.play("dead");
                 this.sprite.body.setSize(96, 36, 0, 60);
+                var tween = this.game.add.tween(this.sprite);
+                tween.to({alpha: 0}, 3000, Phaser.Easing.Cubic.Out);
+                tween.onComplete.add(this.sprite.kill);
+                tween.start();
             } else if (this.killed) {
                 return;
             } else if (this.block) {
@@ -80,12 +102,32 @@ Guard.prototype = Object.create(Enemy.prototype, {
         value: function() {
             for (var i = 0; i < missiles.length; i++) {
                 if (this.game.physics.arcade.collide(this.sprite, missiles[i].sprite)) {
-                    missiles[i].explode();
                     if (!this.block) {
                         this.takeDmg(missiles[i].damage);
+                        this.moveTime = this.game.time.now + 2000;
+                        if (missiles[i].sprite.body.velocity.x > 0) {
+                            this.moveSpeed = -this.SPEED * 1.5;
+                            this.sprite.body.velocity.x = 400;
+                        } else {
+                            this.moveSpeed = this.SPEED * 1.5;
+                            this.sprite.body.velocity.x = -400;
+                        }
+                        this.sprite.body.velocity.y = -300;
+                        this.paralyzeTime = this.game.time.now + 800;
                     } else {
                         this.block = false;
+                        this.moveTime = this.game.time.now + 2000;
+                        if (missiles[i].sprite.body.velocity.x > 0) {
+                            this.moveSpeed = -this.SPEED * 1.5;
+                            this.sprite.body.velocity.x = 400;
+                        } else {
+                            this.moveSpeed = this.SPEED * 1.5;
+                            this.sprite.body.velocity.x = -400;
+                        }
+                        this.sprite.body.velocity.y = -300;
+                        this.paralyzeTime = this.game.time.now + 800;
                     }
+                    missiles[i].explode();
                     this.game.hud.setHUDValue(HUD_ELEMENT_RIGHT_PRIMARY, this.health / this.maxHealth);
                     this.game.hud.showHUD(HUD_ELEMENT_RIGHT_PRIMARY);
                 }

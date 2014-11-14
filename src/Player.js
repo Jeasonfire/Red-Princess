@@ -57,6 +57,7 @@ var Player = function(game) {
 
     this.jumps = this.JUMP_AMOUNT;
     this.jumpTime = 0;
+    this.lastFallingSpeed = 0;
 
     this.firing = false;
     this.firingAnim = false;
@@ -131,6 +132,11 @@ Player.prototype = {
             this.jumps = this.JUMP_AMOUNT;
             this.game.hud.showHUD(HUD_ELEMENT_LEFT_SECONDARY); // JUMPS
         }
+        if (this.sprite.body.onFloor() && this.lastFallingSpeed >= MAX_VEL * 0.8) {
+            this.emitterJump.gravity = GRAVITY * 0.2;
+            this.emitterJump.start(true, 600, null, this.JUMP_PARTICLE_AMT);
+        }
+        this.lastFallingSpeed = this.sprite.body.velocity.y;
     },
 
     updateFiring: function() {
@@ -203,6 +209,7 @@ Player.prototype = {
             this.jumpTime = this.game.time.now + JUMP_RESET_TIME;
             this.sprite.body.velocity.y = this.JUMP_SPEED;
             if (!this.onFloor) {
+                this.emitterJump.gravity = GRAVITY;
                 this.emitterJump.start(true, 600, null, this.JUMP_PARTICLE_AMT);
                 this.jumps--;
                 this.game.hud.showHUD(HUD_ELEMENT_LEFT_SECONDARY); // JUMPS
