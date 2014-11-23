@@ -3,11 +3,16 @@ Codename: Red Princess
 
 Table of contents
 -----------------
+* [State](#state)
 * [Idea](#idea)
 * [Story](#story)
 * [License](#license)
 * [Credits](#credits)
 * [Tools](#tools)
+
+State
+-----
+The current state of the project is: **Not being worked on.**
 
 Idea
 ----
